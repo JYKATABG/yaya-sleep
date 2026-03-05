@@ -1,0 +1,55 @@
+.sleep-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    gap: 1em;
+    align-items: center;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.input-field {
+    /* flex: 1; */
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    min-width: 250px;
+}
+
+.sleep-form .input-field input {
+    flex: 1;
+    font-size: 18px;
+    text-align: center;
+}
+
+.time-input,
+.date-input {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    padding: 12px;
+    color: white;
+    width: 100%;
+}
+
+input::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+@media (min-width: 1024px) {
+
+    .sleep-form {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .input-field {
+        width: 100%;
+    }
+}

@@ -1,0 +1,56 @@
+@import url("/src/styles/Header.css");
+@import url("/src/styles/HistoryLogs.css");
+@import url("/src/styles/SleepForm.css");
+@import url("/src/styles/Stats.css");
+
+.container {
+    background: linear-gradient(135deg, #4DD0E1 0%, #80CBC4 50%, #B197FC 100%);
+    color: white;
+    box-shadow: 0 15px 35px rgba(38, 198, 218, 0.2);
+    backdrop-filter: blur(10px);
+
+    min-width: 95%;
+    width: 350px;
+    min-height: 90vh;
+
+    border-radius: 30px;
+    padding: 25px 15px;
+    border: 5px solid #80DEEA;
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5em;
+    align-items: center;
+    flex-direction: column;
+}
+
+.submit-btn {
+    cursor: pointer;
+    background-color: var(--primary-button);
+    width: 100%;
+    max-width: 250px;
+    padding: 12px;
+    border: none;
+    border-radius: 15px;
+    font-size: 15px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    opacity: 0.7;
+}
+
+.submit-btn:active {
+    transform: scale(0.95);
+}
+
+@media (min-width: 1024px) {
+
+    .container {
+        width: 100%;
+        min-width: 500px;
+        padding: 15px 10px;
+    }
+}

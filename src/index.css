@@ -1,0 +1,33 @@
+:root {
+    --bg-main: #E0F7FA;
+    --bg-container: #FFFFFF;
+    --main-text: #006064;
+    --secondary-text: #455A64;
+    --inputs-background: #F1FDFF;
+    --inputs-borders: #B2EBF2;
+    --primary-button: #26C6DA;
+    --notification: #80CBC4;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 20px 0;
+    background-color: var(--bg-main);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}

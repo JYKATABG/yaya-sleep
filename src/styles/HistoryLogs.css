@@ -1,0 +1,24 @@
+.history-section {
+    width: 100%;
+}
+
+.history-list {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8em;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--main-text);
+    padding: 12px 15px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
