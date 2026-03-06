@@ -1,0 +1,132 @@
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    width: 800px;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-main);
+    /* #E0F7FA */
+    padding: 20px;
+}
+
+.login-container {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 15px 35px rgba(0, 96, 100, 0.1);
+    text-align: center;
+}
+
+.login-header h1 {
+    color: var(--main-text);
+    /* #006064 */
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.login-header p {
+    color: var(--secondary-text);
+    margin-bottom: 30px;
+}
+
+/* Google Button */
+.google-btn {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #E0F7FA;
+    background: white;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: #455A64;
+}
+
+.google-btn img {
+    width: 20px;
+}
+
+.google-btn:hover {
+    background-color: #F1FDFF;
+    border-color: var(--primary-button);
+}
+
+/* Divider */
+.divider {
+    margin: 25px 0;
+    position: relative;
+    border-bottom: 1px solid #E0F7FA;
+}
+
+.divider span {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 0 15px;
+    font-size: 0.8rem;
+    color: #B2EBF2;
+    text-transform: uppercase;
+}
+
+/* Form */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-form input {
+    padding: 14px;
+    border-radius: 15px;
+    border: 2px solid var(--inputs-borders);
+    background: var(--inputs-background);
+    outline: none;
+    transition: 0.3s;
+}
+
+.login-form input:focus {
+    border-color: var(--primary-button);
+}
+
+.submit-btn {
+    background-color: var(--primary-button);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(38, 198, 218, 0.3);
+    transition: 0.3s;
+}
+
+.submit-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Messages */
+.message {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.message.error {
+    background: #FFEBEE;
+    color: #D32F2F;
+}
+
+.message.success {
+    background: #E8F5E9;
+    color: #2E7D32;
+}

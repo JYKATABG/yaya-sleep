@@ -3,7 +3,7 @@ import { Header } from './components/Header'
 import { HistoryLogs } from './components/HistoryLogs'
 import { SleepForm } from './components/SleepForm'
 import { Stats } from './components/Stats'
-import { SubmitButton } from './components/SubmitButton'
+import LoginPage from './pages/LoginPage'
 
 function App() {
 
@@ -12,9 +12,9 @@ function App() {
       <Header />
       <Stats />
       <SleepForm />
-      <SubmitButton />
       <HistoryLogs />
     </div>
+    // <LoginPage />
   )
 }
 
