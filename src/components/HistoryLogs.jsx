@@ -25,8 +25,9 @@ export const HistoryLogs = () => {
 
   return (
     <section className="history-section">
-      <h3 className="section-title">Sleep log</h3>
+      <h2 className="section-title">Sleep log</h2>
       <ul className="history-list">
+        {logs.length === 0 && <p className="empty-log">Your sleep logs are empty! Add your first!</p>}
         {logs.map((log) => (
           <LogCard key={log.id} log={log} />
         ))}

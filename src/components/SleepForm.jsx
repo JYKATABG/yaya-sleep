@@ -5,7 +5,7 @@ import { supabase } from "../supabaseClient";
 import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
 
-export const SleepForm = () => {
+export const SleepForm = ({onSave}) => {
   const { session } = useAuth();
 
   if (!session) return null;
@@ -38,6 +38,7 @@ export const SleepForm = () => {
       toast.error("Something went wrong when making new record!");
     } else {
       toast.success("Record successfully added ✨");
+      onSave();
     }
   };
 
