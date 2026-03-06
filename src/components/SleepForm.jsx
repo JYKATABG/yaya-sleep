@@ -41,25 +41,6 @@ export const SleepForm = () => {
     }
   };
 
-  const calculateSleepDuration = (bedTime, wakeup) => {
-    const [bedHours, bedMinutes] = bedTime.split(":").map(Number);
-    const [wakeHours, wakeMinutes] = wakeup.split(":").map(Number);
-
-    const startTotal = bedHours * 60 + bedMinutes;
-    const endTotal = wakeHours * 60 + wakeMinutes;
-
-    let duration = endTotal - startTotal;
-
-    if (duration < 0) {
-      duration += 24 * 60;
-    }
-
-    const hours = Math.floor(duration / 60);
-    const minutes = duration % 60;
-
-    return { hours, minutes, totalMinutes: duration };
-  };
-
   const [state, formAction, isPending] = useActionState(saveSleepAction, null);
   return (
     <>
@@ -100,4 +81,23 @@ export const SleepForm = () => {
       </form>
     </>
   );
+};
+
+export const calculateSleepDuration = (bedTime, wakeup) => {
+  const [bedHours, bedMinutes] = bedTime.split(":").map(Number);
+  const [wakeHours, wakeMinutes] = wakeup.split(":").map(Number);
+
+  const startTotal = bedHours * 60 + bedMinutes;
+  const endTotal = wakeHours * 60 + wakeMinutes;
+
+  let duration = endTotal - startTotal;
+
+  if (duration < 0) {
+    duration += 24 * 60;
+  }
+
+  const hours = Math.floor(duration / 60);
+  const minutes = duration % 60;
+
+  return { hours, minutes, totalMinutes: duration };
 };
