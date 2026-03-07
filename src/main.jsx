@@ -8,6 +8,7 @@ import { AuthProvider } from "./contexts/AuthContext.jsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
 import { PublicRoute } from "./components/PublicRoute.jsx";
 import { Toaster } from "react-hot-toast";
+import { SleepProvider } from "./contexts/SleepContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -31,8 +32,10 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-      <Toaster position="top-right" />
-      <RouterProvider router={router} />
+      <SleepProvider>
+        <Toaster position="top-right" />
+        <RouterProvider router={router} />
+      </SleepProvider>
     </AuthProvider>
   </StrictMode>,
 );
