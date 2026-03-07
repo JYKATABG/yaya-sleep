@@ -6,13 +6,12 @@ import { SleepForm } from "./components/SleepForm";
 import { Stats } from "./components/Stats";
 
 function App() {
-  const [refreshKey, setRefreshKey] = useState(0);
   return (
     <div className="container">
       <Header />
       <Stats />
-      <SleepForm onSave={() => setRefreshKey((prev) => prev + 1)} />
-      <HistoryLogs key={refreshKey} />
+      <SleepForm />
+      <HistoryLogs />
     </div>
   );
 }

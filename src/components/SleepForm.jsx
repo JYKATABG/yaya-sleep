@@ -4,9 +4,11 @@ import { SubmitButton } from "./SubmitButton";
 import { supabase } from "../supabaseClient";
 import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
+import { useSleep } from "../contexts/SleepContext";
 
-export const SleepForm = ({onSave}) => {
+export const SleepForm = () => {
   const { session } = useAuth();
+  const { refreshLogs } = useSleep();
 
   if (!session) return null;
 
@@ -38,7 +40,7 @@ export const SleepForm = ({onSave}) => {
       toast.error("Something went wrong when making new record!");
     } else {
       toast.success("Record successfully added ✨");
-      onSave();
+      refreshLogs();
     }
   };
 
