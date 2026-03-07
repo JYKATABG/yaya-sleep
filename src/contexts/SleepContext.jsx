@@ -11,7 +11,7 @@ export function SleepProvider({ children }) {
     const { data, error } = await supabase
       .from("sleep_logs")
       .select("*")
-      .order("date", { ascending: true });
+      .order("date", { ascending: false });
     if (!error) setLogs(data || []);
     setLoading(false);
   }
@@ -20,18 +20,19 @@ export function SleepProvider({ children }) {
     fetchLogs();
   }, []);
 
-  const avgSleep =
+  console.log(logs);
+
+  const totalSleepMinutes =
     logs.length > 0
-      ? (
-          logs.reduce((acc, log) => acc + log.duration_min, 0) /
-          logs.length /
-          60
-        ).toFixed(1)
+      ? Math.round(logs.reduce((acc, log) => acc + log.duration_min, 0) / logs.length)
       : 0;
+
+  const avgHours = Math.floor(totalSleepMinutes / 60);
+  const avgMinutes = totalSleepMinutes % 60;
 
   return (
     <SleepContext.Provider
-      value={{ logs, loading, avgSleep, refreshLogs: fetchLogs }}
+      value={{ logs, loading, avgHours, avgMinutes, refreshLogs: fetchLogs }}
     >
       {children}
     </SleepContext.Provider>
