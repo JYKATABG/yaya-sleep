@@ -19,9 +19,7 @@ export function SleepProvider({ children }) {
   useEffect(() => {
     fetchLogs();
   }, []);
-
-  console.log(logs);
-
+  
   const totalSleepMinutes =
     logs.length > 0
       ? Math.round(logs.reduce((acc, log) => acc + log.duration_min, 0) / logs.length)

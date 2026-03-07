@@ -9,7 +9,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
-  let navigate = useNavigate();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -25,7 +24,6 @@ export default function LoginPage() {
     });
     if (error) setMessage({ type: "error", text: error.message });
     setVerifying(false);
-    navigate("/");
   };
 
   // --- Google Auth ---
@@ -37,7 +35,6 @@ export default function LoginPage() {
       },
     });
     if (error) setMessage({ type: "error", text: error.message });
-    navigate("/");
   };
 
   // --- Magic Link ---
