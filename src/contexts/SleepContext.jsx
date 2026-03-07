@@ -6,6 +6,7 @@ const SleepContext = createContext();
 export function SleepProvider({ children }) {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [weekOffset, setWeekOffset] = useState(0);
 
   async function fetchLogs() {
     const { data, error } = await supabase
@@ -23,7 +24,7 @@ export function SleepProvider({ children }) {
   const lastSevenDays = Array.from({ length: 7 })
     .map((_, i) => {
       const newDate = new Date();
-      newDate.setDate(newDate.getDate() - i);
+      newDate.setDate(newDate.getDate() - i + weekOffset * 7);
       return newDate.toISOString().split("T")[0];
     })
     .reverse();
@@ -48,15 +49,26 @@ export function SleepProvider({ children }) {
   const avgHours = Math.floor(totalSleepMinutes / 60);
   const avgMinutes = totalSleepMinutes % 60;
 
+  const nextWeek = () => setWeekOffset((prev) => prev + 1);
+  const prevWeek = () => setWeekOffset((prev) => prev - 1);
+
+  const resetToToday = () => {
+    setWeekOffset(0);
+  };
+
   return (
     <SleepContext.Provider
       value={{
         groupedLogs,
         lastSevenDays,
+        weekOffset,
+        nextWeek,
+        prevWeek,
         loading,
         avgHours,
         avgMinutes,
         refreshLogs: fetchLogs,
+        resetToToday,
       }}
     >
       {children}
