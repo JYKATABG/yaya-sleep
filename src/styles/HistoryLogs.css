@@ -56,6 +56,11 @@
   text-align: center;
 }
 
+.log-main-date {
+  text-align: center;
+  padding: 10px;
+}
+
 @media (min-width: 1024px) {
   .empty-log {
     text-align: center;
