@@ -32,6 +32,33 @@
   transition: all 0.3s ease;
 }
 
+.date-resetbtn-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+
+.today-btn {
+  cursor: pointer;
+  background-color: #fff;
+  font-size: 12px;
+  border: none;
+  height: 30px;
+  border-radius: 15px;
+  padding: 0 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.today-btn:hover {
+  opacity: 0.7;
+}
+
+.today-btn:active {
+  transform: scale(0.9);
+}
+
 .duration-badge.low-sleep {
   background-color: #ffebee;
   color: #d32f2f;
@@ -56,11 +83,20 @@
   text-align: center;
 }
 
+.log-main-date {
+  text-align: center;
+  padding: 10px;
+}
+
 @media (min-width: 1024px) {
   .empty-log {
     text-align: center;
     font-style: italic;
     font-size: 20px;
     margin: 10px;
+  }
+
+  .today-btn {
+    font-size: 15px;
   }
 }
