@@ -7,6 +7,16 @@ const CONGRATS_MESSAGES = [
   "Glow up in progress... Done! 💅",
   "You're a sleeping pro! 🏆",
   "Fresh and ready to conquer! 🔥",
+  "Sleep level: Master. Zen level: Infinite. 🧘‍♀️",
+  "You didn't just sleep, you performed a miracle! ✨",
+  "Sleeping beauty called... she's jealous. 💅",
+  "Congratulations! You’ve officially escaped the Zombie Zone. 🧟‍♂️❌",
+  "Your brain cells are throwing a party right now! 🥳",
+  "8 hours? You’re basically a professional athlete of rest. 🏆",
+  "Legend has it, you’re now 110% more powerful. 🔥",
+  "Waking up like a Disney princess/prince. 🐦🎶",
+  "You’ve reached the 'Golden Pillow' achievement! 🎖️",
+  "Reality is loading... please wait, high energy detected! 🔌",
 ];
 
 const MOTIVATIONAL_MESSAGES = [
@@ -16,6 +26,16 @@ const MOTIVATIONAL_MESSAGES = [
   "Loading energy for a great day... ⏳",
   "You're building a great habit! 🌱",
   "Keep going, you're doing great! ✨",
+  "Coffee: Required. Attitude: Optional. ☕️🚀",
+  "You're doing great for someone who's basically a human-battery at 20%. 🔋",
+  "Warning: Low fuel, but high spirit! Let's go! ✈️",
+  "Tonight: A date with your bed. Don't be late! 🛌❤️",
+  "Nap-time is not a crime. Just saying... 👀",
+  "Your bed misses you already. It’s a tragic love story. 💔",
+  "Stay strong! The weekend (or your next sleep) is coming. 🛡️",
+  "You're a warrior. A tired warrior, but still a warrior! ⚔️😴",
+  "Focus on the coffee, not the chaos. You got this! ☕️✨",
+  "Running on caffeine and dreams today. Mostly caffeine. 🏃‍♀️💨",
 ];
 
 export const LogCard = ({ log }) => {
