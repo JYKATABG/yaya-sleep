@@ -72,8 +72,16 @@
 }
 
 .congrats-msg {
-  font-size: 0.75rem;
   color: #2e7d32;
+}
+
+.motivation-msg {
+  color: red;
+}
+
+.motivation-msg,
+.congrats-msg {
+  font-size: 0.75rem;
   margin-top: 4px;
   font-style: italic;
   font-weight: 500;
