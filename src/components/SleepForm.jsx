@@ -50,7 +50,7 @@ export const SleepForm = () => {
       <form className="sleep-form" action={formAction}>
         <div className="inputs">
           <div className="input-field">
-            <label htmlFor="start-time">Bedtime</label>
+            <label htmlFor="start-time">I went to bed at</label>
             <input
               name="bedtime"
               type="time"
@@ -60,7 +60,7 @@ export const SleepForm = () => {
             />
           </div>
           <div className="input-field">
-            <label htmlFor="end-time">Wake up</label>
+            <label htmlFor="end-time">I woke up at</label>
             <input
               type="time"
               name="wake-up"
@@ -70,7 +70,7 @@ export const SleepForm = () => {
             />
           </div>
           <div className="input-field data-field">
-            <label htmlFor="log-date">Date</label>
+            <label htmlFor="log-date">Date of sleep</label>
             <input
               type="date"
               name="date"

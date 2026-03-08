@@ -26,6 +26,13 @@
     align-items: center;
     display: flex;
     min-width: 250px;
+    gap: 5px;
+}
+
+.input-field label {
+    font-size: 17px;
+    font-style: italic;
+    font-weight: bold;
 }
 
 .sleep-form .input-field input {
@@ -56,7 +63,9 @@ input::-webkit-calendar-picker-indicator {
     }
 
     .inputs {
-        flex-direction: row;
+        /* flex-direction: row; */
+        width: 95%;
+
     }
 
     .input-field {
