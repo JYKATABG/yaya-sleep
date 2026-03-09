@@ -1,14 +1,12 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import toast from "react-hot-toast";
 
-export const ProtectedRoute = ({ children }) => {
+export const ProtectedRoute = () => {
   const { session, loading } = useAuth();
 
-  if (loading) return <div>Loading...</div>;
-  if (!session) {
-    toast.error("No user found, access denied!");
-    return <Navigate to="/login" />;
-  }
-  return children;
+  if (loading) return <div>Checking session...</div>;
+
+  if (!session) return <Navigate to="/login" replace />;
+
+  return <Outlet />;
 };
