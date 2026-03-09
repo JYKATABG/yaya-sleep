@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
+import toast from "react-hot-toast";
+import { router } from "../main";
 
 const AuthContext = createContext();
 
@@ -22,8 +24,23 @@ export function AuthProvider({ children }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  const signOut = async () => {
+    if (!session) toast.error("Your session is expired");
+
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+
+      toast.success("User successfully signed out! 👋");
+      router.navigate("/login");
+    } catch (error) {
+      console.error("Signout error: ", error);
+      toast.error("Could not sign out. Try again!");
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ session, loading }}>
+    <AuthContext.Provider value={{ session, loading, signOut }}>
       {!loading && children}
     </AuthContext.Provider>
   );

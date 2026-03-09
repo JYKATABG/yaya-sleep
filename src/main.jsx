@@ -10,7 +10,7 @@ import { PublicRoute } from "./components/PublicRoute.jsx";
 import { Toaster } from "react-hot-toast";
 import { SleepProvider } from "./contexts/SleepContext.jsx";
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/login",
     element: (

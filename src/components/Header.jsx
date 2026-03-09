@@ -2,7 +2,7 @@ import { useAuth } from "../contexts/AuthContext";
 import "../styles/Header.css";
 
 export const Header = () => {
-  const { session } = useAuth();
+  const { session, signOut } = useAuth();
   const nickname =
     session?.user.user_metadata.full_name ||
     session?.user.user_metadata.name ||
@@ -18,6 +18,11 @@ export const Header = () => {
   return (
     <header className="app-header">
       <h1 className="welcome-msg">Hello, {nickname}</h1>
+      {session && (
+        <button className="logout-btn" onClick={signOut}>
+          Logout
+        </button>
+      )}
       <p className="current-date">🗓️ {formattedDate}</p>
     </header>
   );
