@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
 
@@ -11,5 +11,5 @@ export const PublicRoute = ({ children }) => {
     return <Navigate to="/" replace />;
   }
 
-  return children;
+  return <Outlet />;
 };
