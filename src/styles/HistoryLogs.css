@@ -2,6 +2,14 @@
   width: 100%;
 }
 
+.history-total {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 15px;
+  width: 150px;
+  margin-top: 5px;
+}
+
 .history-list {
   margin-top: 10px;
   display: flex;
@@ -15,7 +23,6 @@
 .history-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   background-color: rgba(255, 255, 255, 0.9);
   color: var(--main-text);
   padding: 12px 15px;
