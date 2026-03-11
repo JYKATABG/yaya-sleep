@@ -1,3 +1,5 @@
+import { useDisclosure } from "@mantine/hooks";
+import { Modal, Button } from '@mantine/core';
 import { calculateSleepDuration } from "./SleepForm";
 
 const CONGRATS_MESSAGES = [
@@ -40,6 +42,7 @@ const MOTIVATIONAL_MESSAGES = [
 
 export const LogCard = ({ log }) => {
   const { hours, minutes } = calculateSleepDuration(log.bedtime, log.wake_up);
+  const [opened, { open, close }] = useDisclosure(false);
 
   const formatTime = (timeString) => {
     if (!timeString) return "";
@@ -73,19 +76,27 @@ export const LogCard = ({ log }) => {
   }
 
   return (
-    <li className="history-item">
-      <div className="history-info">
-        <p className="history-day">Last sleep ({log.day_name})</p>
-        <span className="history-range">
-          {formatTime(log.bedtime)}ч. - {formatTime(log.wake_up)}ч.
-        </span>
-        <p className={isOptimal ? "congrats-msg" : "motivation-msg"}>{activeMessage}</p>
-      </div>
-      <div className="history-total">
-        <span className={badgeClass}>
-          {hours}h {minutes}m
-        </span>
-      </div>
-    </li>
+    <>
+      <li className="history-item" onClick={open}>
+        <div className="history-info">
+          <p className="history-day">Last sleep ({log.day_name})</p>
+          <span className="history-range">
+            {formatTime(log.bedtime)}ч. - {formatTime(log.wake_up)}ч.
+          </span>
+          <p className={isOptimal ? "congrats-msg" : "motivation-msg"}>
+            {activeMessage}
+          </p>
+        </div>
+        <div className="history-total">
+          <span className={badgeClass}>
+            {hours}h {minutes}m
+          </span>
+        </div>
+      </li>
+      <Modal opened={opened} onClose={close} title="Edit Log" centered>
+        <p>Edit log for {log.day_name}</p>
+        <Button onClick={close}>Save</Button>
+      </Modal>
+    </>
   );
 };
