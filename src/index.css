@@ -1,4 +1,6 @@
 @import "@mantine/core/styles.css";
+@import "@mantine/core/styles.css";
+@import "@mantine/dates/styles.css";
 
 body {
   margin: 0 auto;
@@ -7,14 +9,14 @@ body {
 }
 
 :root {
-    --bg-main: #E0F7FA;
-    --bg-container: #FFFFFF;
-    --main-text: #006064;
-    --secondary-text: #455A64;
-    --inputs-background: #F1FDFF;
-    --inputs-borders: #B2EBF2;
-    --primary-button: #26C6DA;
-    --notification: #80CBC4;
+  --bg-main: #e0f7fa;
+  --bg-container: #ffffff;
+  --main-text: #006064;
+  --secondary-text: #455a64;
+  --inputs-background: #f1fdff;
+  --inputs-borders: #b2ebf2;
+  --primary-button: #26c6da;
+  --notification: #80cbc4;
 }
 
 /* *,
