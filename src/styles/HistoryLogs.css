@@ -7,7 +7,7 @@
   justify-content: flex-end;
   font-size: 15px;
   width: 150px;
-  margin-top: 5px;
+  height: 100%;
 }
 
 .history-list {
@@ -31,6 +31,7 @@
 }
 
 .duration-badge {
+  font-size: 13px;
   padding: 6px 12px;
   border-radius: 12px;
   font-weight: bold;
@@ -112,6 +113,10 @@
   }
 
   .today-btn {
+    font-size: 15px;
+  }
+
+  .duration-badge {
     font-size: 15px;
   }
 }
