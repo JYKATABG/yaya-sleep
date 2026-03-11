@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { supabase } from "../supabaseClient";
 import { createContext, useContext, useState, useEffect } from "react";
 
@@ -42,8 +43,8 @@ export function SleepProvider({ children }) {
   const totalSleepMinutes =
     logs.length > 0
       ? Math.round(
-          logs.reduce((acc, log) => acc + log.duration_min, 0) / logs.length,
-        )
+        logs.reduce((acc, log) => acc + log.duration_min, 0) / logs.length,
+      )
       : 0;
 
   const avgHours = Math.floor(totalSleepMinutes / 60);
@@ -55,6 +56,23 @@ export function SleepProvider({ children }) {
   const resetToToday = () => {
     setWeekOffset(0);
   };
+
+  const editLog = async (logId, data) => {
+    try {
+      const { error } = await supabase
+        .from('sleep_logs')
+        .update(data)
+        .eq('id', logId);
+
+      if (error) throw error;
+
+      setLogs(prev => prev.map(log => log.id === logId ? { ...log, ...data } : log))
+      return true
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
 
   return (
     <SleepContext.Provider
@@ -69,6 +87,7 @@ export function SleepProvider({ children }) {
         avgMinutes,
         refreshLogs: fetchLogs,
         resetToToday,
+        editLog
       }}
     >
       {children}

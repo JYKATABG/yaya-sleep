@@ -50,7 +50,8 @@
   padding: 6px 12px;
   border-radius: 12px;
   font-weight: bold;
-  background-color: #e0f7fa; /* Стандартно тюркоазено */
+  background-color: #e0f7fa;
+  /* Стандартно тюркоазено */
   color: #00838f;
   transition: all 0.3s ease;
 }
@@ -117,6 +118,11 @@
 .log-main-date {
   text-align: center;
   padding: 10px;
+}
+
+.locked-date-picker {
+  pointer-events: none;
+  opacity: 0.7;
 }
 
 @media (min-width: 1024px) {

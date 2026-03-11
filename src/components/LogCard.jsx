@@ -1,8 +1,10 @@
 import { useDisclosure } from "@mantine/hooks";
-import { Modal, Button, TextInput, Flex, Text } from "@mantine/core";
+import { Modal, Button, Text } from "@mantine/core";
 import { calculateSleepDuration } from "./SleepForm";
 import { useForm } from "@mantine/form";
 import { DatePicker, TimePicker } from "@mantine/dates";
+import { useSleep } from "../contexts/SleepContext";
+import toast from "react-hot-toast";
 
 const CONGRATS_MESSAGES = [
   "Great job! 🌟 Fully charged!",
@@ -43,6 +45,7 @@ const MOTIVATIONAL_MESSAGES = [
 ];
 
 export const LogCard = ({ log }) => {
+  const { editLog } = useSleep();
   const { hours, minutes } = calculateSleepDuration(log.bedtime, log.wake_up);
   const [opened, { open, close }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
@@ -84,19 +87,33 @@ export const LogCard = ({ log }) => {
     initialValues: {
       bedtime: log.bedtime || "",
       wake_up: log.wake_up || "",
-      date: log.date ? new Date(log.date) : new Date(),
     },
   });
 
-  const onEdit = () => {
+  const handleEdit = async () => {
     const values = form.getValues();
-    const formattedData = {
-      ...values,
-      date: values.date.toISOString().split("T")[0],
-    };
-    console.log(formattedData);
-    // todo: edit function
-    close();
+
+    const originalData = {
+      bedtime: log.bedtime,
+      wake_up: log.wake_up,
+    }
+
+    const hasChanged = JSON.stringify(values) !== JSON.stringify(originalData);
+
+    if (!hasChanged) {
+      toast("❗No changes detected");
+      close();
+      return;
+    }
+
+    const result = await editLog(log.id, values);
+
+    if (result) {
+      toast.success("Log updated successfully")
+      close();
+    } else {
+      toast.error("Failed to update log");
+    }
   };
 
   const handleDelete = () => {
@@ -122,7 +139,11 @@ export const LogCard = ({ log }) => {
           </span>
         </div>
       </li>
-      <Modal opened={opened} onClose={close} centered>
+      <Modal
+        opened={opened}
+        onClose={close}
+        centered
+        size={"md"}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <Text size="lg">Edit log for {log.day_name}</Text>
           <Button color="red" onClick={openDelete}>Delete record</Button>
@@ -140,7 +161,9 @@ export const LogCard = ({ log }) => {
           <DatePicker
             style={{ display: "flex", justifyContent: "center" }}
             label="date"
-            {...form.getInputProps("date")}
+            className="locked-date-picker"
+            value={new Date(log.date)}
+            onChange={() => { }}
           />
         </div>
         <div
@@ -150,7 +173,7 @@ export const LogCard = ({ log }) => {
             margin: "10px 0",
           }}
         >
-          <Button style={{ flex: "1" }} size="md" onClick={onEdit}>
+          <Button style={{ flex: "1" }} size="md" onClick={handleEdit}>
             Save
           </Button>
           <Button style={{ flex: "1" }} size="md" onClick={close}>
