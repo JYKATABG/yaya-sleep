@@ -8,19 +8,17 @@
   color: white;
   box-shadow: 0 15px 35px rgba(38, 198, 218, 0.2);
   backdrop-filter: blur(10px);
-
-  min-width: 95%;
-  width: 350px;
-  min-height: 90vh;
-
-  border-radius: 30px;
   padding: 25px 15px;
-  border: 5px solid #80deea;
+  margin: 0 auto;
+  min-height: 90vh;
+  margin: 0 auto;  
   display: flex;
-  justify-content: space-between;
-  gap: 1.5em;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5em;
+    position: relative;
+  z-index: 1;
 }
 
 .submit-btn {

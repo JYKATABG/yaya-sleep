@@ -9,6 +9,7 @@ import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
 import { PublicRoute } from "./components/PublicRoute.jsx";
 import { Toaster } from "react-hot-toast";
 import { SleepProvider } from "./contexts/SleepContext.jsx";
+import { MantineProvider } from "@mantine/core";
 
 export const router = createBrowserRouter([
   {
@@ -34,11 +35,13 @@ export const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <AuthProvider>
-      <SleepProvider>
-        <Toaster position="top-right" />
-        <RouterProvider router={router} />
-      </SleepProvider>
-    </AuthProvider>
+    <MantineProvider>
+      <AuthProvider>
+        <SleepProvider>
+          <Toaster position="top-right" />
+          <RouterProvider router={router} />
+        </SleepProvider>
+      </AuthProvider>
+    </MantineProvider>
   </StrictMode>,
 );

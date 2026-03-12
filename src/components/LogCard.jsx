@@ -1,4 +1,10 @@
+import { useDisclosure } from "@mantine/hooks";
+import { Modal, Button, Text } from "@mantine/core";
 import { calculateSleepDuration } from "./SleepForm";
+import { useForm } from "@mantine/form";
+import { DatePicker, TimePicker } from "@mantine/dates";
+import { useSleep } from "../contexts/SleepContext";
+import toast from "react-hot-toast";
 
 const CONGRATS_MESSAGES = [
   "Great job! 🌟 Fully charged!",
@@ -39,7 +45,11 @@ const MOTIVATIONAL_MESSAGES = [
 ];
 
 export const LogCard = ({ log }) => {
+  const { editLog, deleteLog } = useSleep();
   const { hours, minutes } = calculateSleepDuration(log.bedtime, log.wake_up);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [deleteOpened, { open: openDelete, close: closeDelete }] =
+    useDisclosure(false);
 
   const formatTime = (timeString) => {
     if (!timeString) return "";
@@ -72,20 +82,129 @@ export const LogCard = ({ log }) => {
     badgeClass += " optimal-sleep";
   }
 
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      bedtime: log.bedtime || "",
+      wake_up: log.wake_up || "",
+    },
+  });
+
+  const handleEdit = async () => {
+    const values = form.getValues();
+
+    const originalData = {
+      bedtime: log.bedtime,
+      wake_up: log.wake_up,
+    };
+
+    const hasChanged = JSON.stringify(values) !== JSON.stringify(originalData);
+
+    if (!hasChanged) {
+      toast("❗No changes detected");
+      close();
+      return;
+    }
+
+    const result = await editLog(log.id, values);
+
+    if (result) {
+      toast.success("Log updated successfully");
+      close();
+    } else {
+      toast.error("Failed to update log");
+    }
+  };
+
+  const handleDelete = async () => {
+    const result = await deleteLog(log.id);
+
+    if (result) {
+      toast.success("Log deleted successfully");
+    } else {
+      toast.error("Failed to delete log");
+    }
+  };
+
   return (
-    <li className="history-item">
-      <div className="history-info">
-        <p className="history-day">Last sleep ({log.day_name})</p>
-        <span className="history-range">
-          {formatTime(log.bedtime)}ч. - {formatTime(log.wake_up)}ч.
-        </span>
-        <p className={isOptimal ? "congrats-msg" : "motivation-msg"}>{activeMessage}</p>
-      </div>
-      <div className="history-total">
-        <span className={badgeClass}>
-          {hours}h {minutes}m
-        </span>
-      </div>
-    </li>
+    <>
+      <li className="history-item" onClick={open}>
+        <div className="history-info">
+          <p className="history-day">Last sleep ({log.day_name})</p>
+          <span className="history-range">
+            {formatTime(log.bedtime)}ч. - {formatTime(log.wake_up)}ч.
+          </span>
+          <p className={isOptimal ? "congrats-msg" : "motivation-msg"}>
+            {activeMessage}
+          </p>
+        </div>
+        <div className="history-total">
+          <span className={badgeClass}>
+            {hours}h {minutes}m
+          </span>
+        </div>
+      </li>
+      <Modal opened={opened} onClose={close} centered size={"md"}>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Text size="lg">Edit log for {log.day_name}</Text>
+          <Button color="red" onClick={openDelete}>
+            Delete record
+          </Button>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: "1em",
+          }}
+        >
+          <TimePicker label="Bedtime" {...form.getInputProps("bedtime")} />
+          <TimePicker label="Wake Up" {...form.getInputProps("wake_up")} />
+          <DatePicker
+            style={{ display: "flex", justifyContent: "center" }}
+            label="date"
+            className="locked-date-picker"
+            value={new Date(log.date)}
+            onChange={() => {}}
+          />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            gap: "1em",
+            margin: "10px 0",
+          }}
+        >
+          <Button style={{ flex: "1" }} size="md" onClick={handleEdit}>
+            Save
+          </Button>
+          <Button style={{ flex: "1" }} size="md" onClick={close}>
+            Close
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal
+        opened={deleteOpened}
+        onClose={closeDelete}
+        title="Confirm deletion"
+        centered
+        size="sm"
+      >
+        <p>
+          Are you sure you want to delete this log? This action cannot be
+          undone.
+        </p>
+        <div style={{ display: "flex", gap: "10px", margin: "20px" }}>
+          <Button variant="outline" onClick={closeDelete}>
+            Cancel
+          </Button>
+          <Button color="red" onClick={handleDelete}>
+            Yes, delete it
+          </Button>
+        </div>
+      </Modal>
+    </>
   );
 };
