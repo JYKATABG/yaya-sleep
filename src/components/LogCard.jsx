@@ -45,7 +45,7 @@ const MOTIVATIONAL_MESSAGES = [
 ];
 
 export const LogCard = ({ log }) => {
-  const { editLog } = useSleep();
+  const { editLog, deleteLog } = useSleep();
   const { hours, minutes } = calculateSleepDuration(log.bedtime, log.wake_up);
   const [opened, { open, close }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
@@ -96,7 +96,7 @@ export const LogCard = ({ log }) => {
     const originalData = {
       bedtime: log.bedtime,
       wake_up: log.wake_up,
-    }
+    };
 
     const hasChanged = JSON.stringify(values) !== JSON.stringify(originalData);
 
@@ -109,17 +109,22 @@ export const LogCard = ({ log }) => {
     const result = await editLog(log.id, values);
 
     if (result) {
-      toast.success("Log updated successfully")
+      toast.success("Log updated successfully");
       close();
     } else {
       toast.error("Failed to update log");
     }
   };
 
-  const handleDelete = () => {
-    console.log(`${log.id} deleted`);
-    // todo: delete function
-  }
+  const handleDelete = async () => {
+    const result = await deleteLog(log.id);
+
+    if (result) {
+      toast.success("Log deleted successfully");
+    } else {
+      toast.error("Failed to delete log");
+    }
+  };
 
   return (
     <>
@@ -139,14 +144,12 @@ export const LogCard = ({ log }) => {
           </span>
         </div>
       </li>
-      <Modal
-        opened={opened}
-        onClose={close}
-        centered
-        size={"md"}>
+      <Modal opened={opened} onClose={close} centered size={"md"}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <Text size="lg">Edit log for {log.day_name}</Text>
-          <Button color="red" onClick={openDelete}>Delete record</Button>
+          <Button color="red" onClick={openDelete}>
+            Delete record
+          </Button>
         </div>
         <div
           style={{
@@ -163,7 +166,7 @@ export const LogCard = ({ log }) => {
             label="date"
             className="locked-date-picker"
             value={new Date(log.date)}
-            onChange={() => { }}
+            onChange={() => {}}
           />
         </div>
         <div

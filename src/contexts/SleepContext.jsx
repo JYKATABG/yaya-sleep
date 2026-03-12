@@ -43,8 +43,8 @@ export function SleepProvider({ children }) {
   const totalSleepMinutes =
     logs.length > 0
       ? Math.round(
-        logs.reduce((acc, log) => acc + log.duration_min, 0) / logs.length,
-      )
+          logs.reduce((acc, log) => acc + log.duration_min, 0) / logs.length,
+        )
       : 0;
 
   const avgHours = Math.floor(totalSleepMinutes / 60);
@@ -60,19 +60,38 @@ export function SleepProvider({ children }) {
   const editLog = async (logId, data) => {
     try {
       const { error } = await supabase
-        .from('sleep_logs')
+        .from("sleep_logs")
         .update(data)
-        .eq('id', logId);
+        .eq("id", logId);
 
       if (error) throw error;
 
-      setLogs(prev => prev.map(log => log.id === logId ? { ...log, ...data } : log))
-      return true
+      setLogs((prev) =>
+        prev.map((log) => (log.id === logId ? { ...log, ...data } : log)),
+      );
+      return true;
     } catch (error) {
-      console.error(error);
+      console.error("Update error: ", error);
       return false;
     }
-  }
+  };
+
+  const deleteLog = async (logId) => {
+    try {
+      const { error } = await supabase
+        .from("sleep_logs")
+        .delete()
+        .eq("id", logId);
+
+      if (error) throw error;
+
+      setLogs((prev) => prev.filter((log) => log.id !== logId));
+      return true;
+    } catch (error) {
+      console.error("Delete error: ", error);
+      return false;
+    }
+  };
 
   return (
     <SleepContext.Provider
@@ -87,7 +106,8 @@ export function SleepProvider({ children }) {
         avgMinutes,
         refreshLogs: fetchLogs,
         resetToToday,
-        editLog
+        editLog,
+        deleteLog,
       }}
     >
       {children}
