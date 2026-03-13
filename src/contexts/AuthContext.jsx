@@ -58,7 +58,7 @@ export function AuthProvider({ children }) {
       if (error) throw error;
 
       toast.success("User successfully signed out! 👋");
-      router.navigate("/login");
+      router.navigate("/auth");
     } catch (error) {
       console.error("Signout error: ", error);
       toast.error("Could not sign out. Try again!");

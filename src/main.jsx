@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
     element: <PublicRoute />,
     children: [
       {
-        path: "/login",
+        index: true,
         element: <AuthPages />,
       },
     ],
