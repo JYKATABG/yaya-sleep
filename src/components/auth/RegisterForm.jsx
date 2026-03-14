@@ -26,16 +26,28 @@ export default function RegisterForm() {
       email,
       password,
       options: {
-        username: username,
+        data: {
+          username: username,
+        },
       },
     });
 
-    if (error) toast.error(error.message);
-    else toast.success("Register successfully");
+    if (error) {
+      if (error.code === "user_already_exists") {
+        toast.error("Email is already used. Try loging in");
+      } else {
+        toast.error(error.message);
+      }
+    } else {
+      toast.success(
+        "Register successfully! Please check your email for verification.",
+      );
+      form.reset();
+    }
   };
 
   return (
-    <form>
+    <form onSubmit={form.onSubmit(handleSubmit)}>
       <Stack>
         <TextInput
           label="Username"

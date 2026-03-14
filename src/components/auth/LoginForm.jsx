@@ -1,10 +1,11 @@
 import { supabase } from "../../supabaseClient";
-import "../styles/LoginPage.css";
+// import "../styles/LoginForm.css";
+import "../../styles/LoginForm.css";
 import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import toast from "react-hot-toast";
 
-export default function LoginPage() {
+export default function LoginForm() {
   const form = useForm({
     initialValues: {
       email: "",
@@ -41,7 +42,7 @@ export default function LoginPage() {
           placeholder="Your password..."
           {...form.getInputProps("password")}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Login</Button>
       </Stack>
     </form>
   );
