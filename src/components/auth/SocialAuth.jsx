@@ -4,7 +4,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { supabase } from "../../supabaseClient";
 
-export const SocialAuth = () => {
+export default function SocialAuth() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -32,7 +32,7 @@ export const SocialAuth = () => {
   };
 
   return (
-    <Stack>
+    <Stack style={{marginTop: "20px"}}>
       <Divider label="or continue with" labelPosition="center" />
 
       <Button
@@ -61,4 +61,4 @@ export const SocialAuth = () => {
       </Stack>
     </Stack>
   );
-};
+}

@@ -1,6 +1,5 @@
 import { supabase } from "../../supabaseClient";
-// import "../styles/LoginForm.css";
-import "../../styles/LoginForm.css";
+import "../../styles/AuthForms.css";
 import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import toast from "react-hot-toast";
@@ -30,7 +29,7 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
+    <form onSubmit={form.onSubmit(handleSubmit)} className="auth-form">
       <Stack>
         <TextInput
           label="Email"

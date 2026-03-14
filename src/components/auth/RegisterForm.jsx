@@ -3,6 +3,7 @@ import { useForm } from "@mantine/form";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import { supabase } from "../../supabaseClient";
 import toast from "react-hot-toast";
+import "../../styles/AuthForms.css";
 
 export default function RegisterForm() {
   const form = useForm({
@@ -47,7 +48,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <form onSubmit={form.onSubmit(handleSubmit)}>
+    <form onSubmit={form.onSubmit(handleSubmit)} className="auth-form">
       <Stack>
         <TextInput
           label="Username"
@@ -62,6 +63,9 @@ export default function RegisterForm() {
         <PasswordInput
           label="Password"
           placeholder="Your password..."
+          style={{
+            border: "none",
+          }}
           visibilityToggleButtonProps={{
             title: "Hidde/Show password",
             icon: (revealed) => (revealed ? <IconEyeOff /> : <IconEye />),
