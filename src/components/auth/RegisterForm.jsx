@@ -4,8 +4,10 @@ import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import { supabase } from "../../supabaseClient";
 import toast from "react-hot-toast";
 import "../../styles/AuthForms.css";
+import { useState } from "react";
 
 export default function RegisterForm() {
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     initialValues: {
       username: "",
@@ -23,6 +25,7 @@ export default function RegisterForm() {
 
   const handleSubmit = async (values) => {
     const { username, email, password } = values;
+    setLoading(true);
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -44,6 +47,7 @@ export default function RegisterForm() {
         "Register successfully! Please check your email for verification.",
       );
       form.reset();
+      setLoading(false);
     }
   };
 
@@ -66,14 +70,15 @@ export default function RegisterForm() {
           style={{
             border: "none",
           }}
-          visibilityToggleButtonProps={{
-            title: "Hidde/Show password",
-            icon: (revealed) => (revealed ? <IconEyeOff /> : <IconEye />),
-          }}
+          visibilityToggleIcon={({ revealed }) =>
+            revealed ? <IconEyeOff size={22} /> : <IconEye size={22} />
+          }
           {...form.getInputProps("password")}
         />
       </Stack>
-      <Button type="submit">Register</Button>
+      <Button type="submit" loading={loading}>
+        Register
+      </Button>
     </form>
   );
 }

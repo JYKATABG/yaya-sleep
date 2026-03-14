@@ -3,8 +3,10 @@ import "../../styles/AuthForms.css";
 import { Button, PasswordInput, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 export default function LoginForm() {
+  const [loading, setLoading] = useState(false);
   const form = useForm({
     initialValues: {
       email: "",
@@ -19,6 +21,7 @@ export default function LoginForm() {
 
   const handleSubmit = async (values) => {
     const { email, password } = values;
+    setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -26,6 +29,7 @@ export default function LoginForm() {
 
     if (error) toast.error(error.message);
     else toast.success("Login successfully");
+    setLoading(false);
   };
 
   return (
@@ -41,7 +45,9 @@ export default function LoginForm() {
           placeholder="Your password..."
           {...form.getInputProps("password")}
         />
-        <Button type="submit">Login</Button>
+        <Button type="submit" loading={loading}>
+          Login
+        </Button>
       </Stack>
     </form>
   );
