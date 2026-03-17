@@ -6,25 +6,24 @@ import { AppShell, Container, Group, Stack } from "@mantine/core";
 
 function App() {
   return (
-    <AppShell header={{ height: 70 }} padding="md" bg="#39c9bb">
+    <AppShell header={{ height: 70 }} padding="sm" bg="#39c9bb">
       <AppShell.Header>
         <Header />
       </AppShell.Header>
 
-      <AppShell.Main style={{
-      }}>
-        <Container size="lg">
+      <AppShell.Main>
+        <Container size="lg" fluid>
           <Stack gap="xl">
             <Group
-              justify="space-between"
-              align="center"
-              mt="5em"
-              grow
+              justify="space-evenly"
+              align="flex-start"
+              wrap="nowrap"
+              gap="md"
             >
-              <div style={{ flex: 1, maxWidth: '500px' }}>
+              <div style={{ flex: 1, }}>
                 <Stats />
               </div>
-              <div style={{ flex: 1, maxWidth: '500px' }}>
+              <div style={{ flex: 1 }}>
                 <SleepForm />
               </div>
             </Group>
@@ -32,7 +31,7 @@ function App() {
           </Stack>
         </Container>
       </AppShell.Main>
-    </AppShell>
+    </AppShell >
   );
 }
 
