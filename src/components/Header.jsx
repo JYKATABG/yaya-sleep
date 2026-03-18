@@ -22,12 +22,12 @@ export const Header = () => {
       <Group justify="space-between" h="100%">
 
         <Stack gap={0}>
-          <Text size="lg" fw={700} c="black">
+          <Text size="lg" fw={700} c="white">
             {nickname}! 👋
           </Text>
           <Group gap={5}>
-            <IconCalendarStats size={14} color="black" />
-            <Text size="sm" c="black" fw={500}>
+            <IconCalendarStats size={14} color="white" />
+            <Text size="sm" c="white" fw={500}>
               {formattedDate}
             </Text>
           </Group>

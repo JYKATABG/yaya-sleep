@@ -1,10 +1,22 @@
-import { useDisclosure } from "@mantine/hooks";
-import { Modal, Button, Text } from "@mantine/core";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import {
+  Modal,
+  Button,
+  Text,
+  ListItem,
+  Group,
+  Paper,
+  ThemeIcon,
+  Stack,
+  Badge,
+  rem,
+} from "@mantine/core";
 import { calculateSleepDuration } from "./SleepForm";
 import { useForm } from "@mantine/form";
 import { DatePicker, TimePicker } from "@mantine/dates";
 import { useSleep } from "../contexts/SleepContext";
 import toast from "react-hot-toast";
+import { IconClock, IconMoonStars } from "@tabler/icons-react";
 
 const CONGRATS_MESSAGES = [
   "Great job! 🌟 Fully charged!",
@@ -50,6 +62,9 @@ export const LogCard = ({ log }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
+
+  const isMobile = useMediaQuery("(max-width: 500px)");
+  const MAIN_COLOR = "#39c9bb";
 
   const formatTime = (timeString) => {
     if (!timeString) return "";
@@ -128,22 +143,109 @@ export const LogCard = ({ log }) => {
 
   return (
     <>
-      <li className="history-item" onClick={open}>
-        <div className="history-info">
-          <p className="history-day">Last sleep ({log.day_name})</p>
-          <span className="history-range">
-            {formatTime(log.bedtime)}ч. - {formatTime(log.wake_up)}ч.
-          </span>
-          <p className={isOptimal ? "congrats-msg" : "motivation-msg"}>
-            {activeMessage}
-          </p>
-        </div>
-        <div className="history-total">
-          <span className={badgeClass}>
-            {hours}h {minutes}m
-          </span>
-        </div>
-      </li>
+      <Paper
+        withBorder
+        p="md"
+        radius="md"
+        mb="sm"
+        shadow="xs"
+        onClick={open}
+        style={{
+          cursor: "pointer",
+          transition: "all 0.2s ease",
+          // Hover ефект чрез JS за v7, ако не ползваш CSS modules
+          ":hover": {
+            backgroundColor: "#fcfdfd",
+          },
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "translateY(-2px)";
+          e.currentTarget.style.borderColor = MAIN_COLOR;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "translateY(0)";
+          e.currentTarget.style.borderColor = "#dee2e6"; // стандартен border цвят
+        }}
+      >
+        <Group
+          justify="space-between"
+          align="center"
+          wrap={isMobile ? "wrap" : "nowrap"}
+        >
+          {/* Лява секция: Икона и Инфо */}
+          <Group gap="md" style={{ flex: 1 }}>
+            <ThemeIcon
+              variant="light"
+              size={isMobile ? "lg" : "xl"}
+              radius="md"
+              style={{
+                backgroundColor: isOptimal ? "#e6f7f6" : "#fff5f5",
+                color: isOptimal ? MAIN_COLOR : "#fa5252",
+              }}
+            >
+              <IconMoonStars size={isMobile ? 20 : 24} />
+            </ThemeIcon>
+
+            <Stack gap={2}>
+              <Text
+                size="xs"
+                fw={700}
+                c="dimmed"
+                style={{ textTransform: "uppercase", letterSpacing: rem(0.5) }}
+              >
+                Last sleep ({log.day_name})
+              </Text>
+
+              <Group gap={5}>
+                <IconClock size={14} color="gray" />
+                <Text size={isMobile ? "sm" : "md"} fw={600}>
+                  {formatTime(log.bedtime)}ч. – {formatTime(log.wake_up)}ч.
+                </Text>
+              </Group>
+
+              <Text
+                size="xs"
+                fw={600}
+                style={{
+                  fontStyle: "italic",
+                  color: isOptimal ? MAIN_COLOR : "#fa5252",
+                }}
+              >
+                {activeMessage}
+              </Text>
+            </Stack>
+          </Group>
+
+          {/* Дясна секция: Времетраене */}
+          <Stack
+            align={isMobile ? "flex-start" : "flex-end"}
+            gap={0}
+            mt={isMobile ? "xs" : 0}
+            pl={isMobile ? 54 : 0} // Подравняване под текста на телефон
+          >
+            <Badge
+              variant="filled"
+              size="lg"
+              radius="sm"
+              style={{
+                backgroundColor: isOptimal ? MAIN_COLOR : "#fa5252",
+                color: "white",
+              }}
+              h={32}
+            >
+              <Text size="sm" fw={800} span>
+                {hours}h {minutes}m
+              </Text>
+            </Badge>
+
+            {isOptimal && (
+              <Text size="10px" fw={700} mt={4} style={{ color: MAIN_COLOR }}>
+                OPTIMAL DURATION
+              </Text>
+            )}
+          </Stack>
+        </Group>
+      </Paper>
       <Modal opened={opened} onClose={close} centered size={"md"}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <Text size="lg">Edit log for {log.day_name}</Text>
