@@ -13,7 +13,7 @@ function App() {
       <AppShell.Main style={{marginTop: "6em", marginBottom: "1.5em"}}>
         <Container size="xl" fluid>
           <Stack gap="xl">
-            <Grid gutter="lg" align="stretch">
+            <Grid gutter="lg" align="stretch" justify="center">
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <div
                   style={{
