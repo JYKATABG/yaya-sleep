@@ -46,22 +46,21 @@ export const Weekbar = ({ onDateSelect, selectedDate }) => {
                   transition: "all 0.2s ease",
                   cursor: "pointer",
 
+                  // Плътен цвят само ако е избрано, иначе сиво
                   backgroundColor: isSelected
-                    ? theme.colors.blue[6]
-                    : hasData
-                      ? theme.colors.blue[0]
-                      : theme.colors.gray[1],
+                    ? "#39c9bb"
+                    : theme.colors.gray[1],
 
-                  border: isSelected
-                    ? `2px solid ${theme.colors.blue[6]}`
-                    : hasData
-                      ? `2px solid ${theme.colors.blue[2]}`
+                  // Рамка, ако е избрано или ако има данни
+                  border:
+                    isSelected || hasData
+                      ? `2px solid #39c9bb`
                       : "2px solid transparent",
 
                   "&:hover": {
                     transform: "scale(1.1)",
                     backgroundColor: isSelected
-                      ? theme.colors.blue[7]
+                      ? "#39c9bb"
                       : theme.colors.gray[2],
                   },
                 })}
@@ -69,7 +68,8 @@ export const Weekbar = ({ onDateSelect, selectedDate }) => {
                 <Text
                   fw={700}
                   size="sm"
-                  c={isSelected ? "white" : hasData ? "blue.7" : "gray.6"}
+                  // Бял текст само на избран бутон, иначе тюркоаз (ако има данни) или сиво
+                  c={isSelected ? "white" : hasData ? "#39c9bb" : "gray.6"}
                 >
                   {dayName}
                 </Text>
