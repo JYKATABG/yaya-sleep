@@ -5,32 +5,43 @@ import { supabase } from "../supabaseClient";
 import { useAuth } from "../contexts/AuthContext";
 import toast from "react-hot-toast";
 import { useSleep } from "../contexts/SleepContext";
+import { Button, Paper } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { DatePicker, TimePicker } from "@mantine/dates";
 
 export const SleepForm = () => {
-  const { session } = useAuth();
+  const { session, user } = useAuth();
   const { refreshLogs } = useSleep();
 
   if (!session) return null;
 
-  const saveSleepAction = async (prevState, formData) => {
-    const bedtime = formData.get("bedtime");
-    const wakeup = formData.get("wake-up");
-    const date = formData.get("date");
-    const dayName = new Date(date).toLocaleDateString("en-US", {
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      bedtime: "",
+      wake_up: "",
+      date: new Date() || "",
+    },
+  });
+
+  const handleSubmit = async () => {
+    const values = form.getValues();
+    const dayName = new Date(values.date).toLocaleDateString("en-US", {
       weekday: "short",
     });
-    const sleep = calculateSleepDuration(bedtime, wakeup);
 
-    if (!session?.user) {
+    const sleep = calculateSleepDuration(values.bedtime, values.wake_up);
+
+    if (!user) {
       toast.error("You have to be logged");
     }
 
     const newLog = {
-      user_id: session?.user?.id,
-      date,
+      user_id: user?.id,
+      date: values.date,
       day_name: dayName,
-      bedtime,
-      wake_up: wakeup,
+      bedtime: values.bedtime,
+      wake_up: values.wake_up,
       duration_min: sleep.totalMinutes,
     };
 
@@ -44,44 +55,41 @@ export const SleepForm = () => {
     }
   };
 
-  const [state, formAction, isPending] = useActionState(saveSleepAction, null);
   return (
     <>
-      <form className="sleep-form" action={formAction}>
-        <div className="inputs">
-          <div className="input-field">
-            <label htmlFor="start-time">I went to bed at</label>
-            <input
-              name="bedtime"
-              type="time"
-              id="start-time"
-              className="time-input"
-              required
-            />
-          </div>
-          <div className="input-field">
-            <label htmlFor="end-time">I woke up at</label>
-            <input
-              type="time"
-              name="wake-up"
-              id="end-time"
-              className="time-input"
-              required
-            />
-          </div>
-          <div className="input-field data-field">
-            <label htmlFor="log-date">Date of sleep</label>
-            <input
-              type="date"
-              name="date"
-              id="log-date"
-              className="date-input"
-              required
-            />
-          </div>
+      <Paper shadow="xs" p="md" radius="md">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            gap: "1em",
+          }}
+        >
+          <TimePicker label="Bedtime" {...form.getInputProps("bedtime")} />
+          <TimePicker label="Wake Up" {...form.getInputProps("wake_up")} />
+          <DatePicker
+            style={{ display: "flex", justifyContent: "center" }}
+            label="date"
+          />
         </div>
-        <SubmitButton isPending={isPending} />
-      </form>
+        <div
+          style={{
+            display: "flex",
+            gap: "1em",
+            margin: "10px 0",
+          }}
+        >
+          <Button
+            size="md"
+            style={{ flex: 1 }}
+            onClick={handleSubmit}
+            bg="#39c9bb"
+          >
+            Save
+          </Button>
+        </div>
+      </Paper>
     </>
   );
 };
