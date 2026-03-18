@@ -97,7 +97,7 @@ export const Weekbar = ({ onDateSelect, selectedDate }) => {
           height: "60px",
           color: "black",
         }}
-        onClick={prevWeek}
+        onClick={nextWeek}
       >
         <IconArrowRight />
       </Button>
