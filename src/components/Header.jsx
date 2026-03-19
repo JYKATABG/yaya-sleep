@@ -36,7 +36,7 @@ export const Header = () => {
         {session && (
           <Menu shadow="md" width={200} position="bottom-end" transitionProps={{ transition: 'pop-top-right' }}>
             <Menu.Target>
-              <UnstyledButton style={{ padding: '5px', borderRadius: '8px' }}>
+              <UnstyledButton style={{ padding: '5px', borderRadius: '8px', color: "white" }}>
                 <Group gap={7}>
                   <Avatar
                     src={session?.user.user_metadata.avatar_url}
