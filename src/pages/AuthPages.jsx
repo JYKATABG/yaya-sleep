@@ -16,7 +16,7 @@ export default function AuthPages() {
           margin: "auto",
         }}
       >
-        <Tabs defaultValue={"login"}>
+        <Tabs defaultValue={"login"} color="#39c9bb">
           <Tabs.List>
             <Tabs.Tab value="login">Login</Tabs.Tab>
             <Tabs.Tab value="register">Register</Tabs.Tab>
