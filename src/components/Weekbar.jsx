@@ -3,6 +3,8 @@ import { useSleep } from "../contexts/SleepContext";
 import "../styles/Weekbar.css";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 
+const MAIN_COLOR = "#39c9bb"
+
 export const Weekbar = ({ onDateSelect, selectedDate }) => {
   const { groupedLogs, lastSevenDays, nextWeek, prevWeek } = useSleep();
 
@@ -46,21 +48,19 @@ export const Weekbar = ({ onDateSelect, selectedDate }) => {
                   transition: "all 0.2s ease",
                   cursor: "pointer",
 
-                  // Плътен цвят само ако е избрано, иначе сиво
                   backgroundColor: isSelected
-                    ? "#39c9bb"
+                    ? MAIN_COLOR
                     : theme.colors.gray[1],
 
-                  // Рамка, ако е избрано или ако има данни
                   border:
                     isSelected || hasData
-                      ? `2px solid #39c9bb`
+                      ? `2px solid ${MAIN_COLOR}`
                       : "2px solid transparent",
 
                   "&:hover": {
                     transform: "scale(1.1)",
                     backgroundColor: isSelected
-                      ? "#39c9bb"
+                      ? MAIN_COLOR
                       : theme.colors.gray[2],
                   },
                 })}
@@ -68,21 +68,19 @@ export const Weekbar = ({ onDateSelect, selectedDate }) => {
                 <Text
                   fw={700}
                   size="sm"
-                  // Бял текст само на избран бутон, иначе тюркоаз (ако има данни) или сиво
-                  c={isSelected ? "white" : hasData ? "#39c9bb" : "gray.6"}
+                  c={isSelected ? "white" : hasData ? MAIN_COLOR : "gray.6"}
                 >
                   {dayName}
                 </Text>
               </UnstyledButton>
 
-              {/* Малка точка индикатор под кръга, ако има данни */}
               {hasData && !isSelected && (
                 <div
                   style={{
                     width: 4,
                     height: 4,
                     borderRadius: "50%",
-                    backgroundColor: "var(--mantine-color-blue-6)",
+                    backgroundColor: MAIN_COLOR,
                   }}
                 />
               )}

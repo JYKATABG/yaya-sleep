@@ -153,7 +153,6 @@ export const LogCard = ({ log }) => {
         style={{
           cursor: "pointer",
           transition: "all 0.2s ease",
-          // Hover ефект чрез JS за v7, ако не ползваш CSS modules
           ":hover": {
             backgroundColor: "#fcfdfd",
           },
@@ -164,7 +163,7 @@ export const LogCard = ({ log }) => {
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.transform = "translateY(0)";
-          e.currentTarget.style.borderColor = "#dee2e6"; // стандартен border цвят
+          e.currentTarget.style.borderColor = "#dee2e6";
         }}
       >
         <Group
@@ -172,7 +171,6 @@ export const LogCard = ({ log }) => {
           align="center"
           wrap={isMobile ? "wrap" : "nowrap"}
         >
-          {/* Лява секция: Икона и Инфо */}
           <Group gap="md" style={{ flex: 1 }}>
             <ThemeIcon
               variant="light"
@@ -216,12 +214,11 @@ export const LogCard = ({ log }) => {
             </Stack>
           </Group>
 
-          {/* Дясна секция: Времетраене */}
           <Stack
             align={isMobile ? "flex-start" : "flex-end"}
             gap={0}
             mt={isMobile ? "xs" : 0}
-            pl={isMobile ? 54 : 0} // Подравняване под текста на телефон
+            pl={isMobile ? 54 : 0}
           >
             <Badge
               variant="filled"
@@ -246,7 +243,7 @@ export const LogCard = ({ log }) => {
           </Stack>
         </Group>
       </Paper>
-      <Modal opened={opened} onClose={close} centered size={"md"}>
+      <Modal opened={opened} onClose={close} centered size={"md"} key={log?.id}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <Text size="lg">Edit log for {log.day_name}</Text>
           <Button color="red" onClick={openDelete}>
@@ -261,15 +258,19 @@ export const LogCard = ({ log }) => {
             gap: "1em",
           }}
         >
-          <TimePicker label="Bedtime" {...form.getInputProps("bedtime")} />
-          <TimePicker label="Wake Up" {...form.getInputProps("wake_up")} />
-          <DatePicker
-            style={{ display: "flex", justifyContent: "center" }}
-            label="date"
-            className="locked-date-picker"
-            value={new Date(log.date)}
-            onChange={() => {}}
+          <TimePicker
+            label="Bedtime"
+            {...form.getInputProps("bedtime")}
+            key={form.key("bedtime")}
           />
+          <TimePicker
+            label="Wake Up"
+            {...form.getInputProps("wake_up")}
+            key={form.key("wake_up")}
+          />
+          <Text size="sm" c="dimmed">
+            Date: {new Date(log.date).toLocaleDateString()}
+          </Text>
         </div>
         <div
           style={{

@@ -51,6 +51,7 @@ export const SleepForm = () => {
       toast.error("Something went wrong when making new record!");
     } else {
       toast.success("Record successfully added ✨");
+      form.reset();
       refreshLogs();
     }
   };
@@ -66,11 +67,21 @@ export const SleepForm = () => {
             gap: "1em",
           }}
         >
-          <TimePicker label="Bedtime" {...form.getInputProps("bedtime")} />
-          <TimePicker label="Wake Up" {...form.getInputProps("wake_up")} />
+          <TimePicker
+            label="Bedtime"
+            {...form.getInputProps("bedtime")}
+            key={form.key("bedtime")}
+          />
+          <TimePicker
+            label="Wake Up"
+            {...form.getInputProps("wake_up")}
+            key={form.key("wake_up")}
+          />
           <DatePicker
             style={{ display: "flex", justifyContent: "center" }}
             label="date"
+            {...form.getInputProps("date")}
+            key={form.key("date")}
           />
         </div>
         <div
