@@ -3,6 +3,8 @@ import { useSleep } from "../contexts/SleepContext";
 import "../styles/Weekbar.css";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 
+const MAIN_COLOR = "#39c9bb"
+
 export const Weekbar = ({ onDateSelect, selectedDate }) => {
   const { groupedLogs, lastSevenDays, nextWeek, prevWeek } = useSleep();
 
@@ -47,21 +49,18 @@ export const Weekbar = ({ onDateSelect, selectedDate }) => {
                   cursor: "pointer",
 
                   backgroundColor: isSelected
-                    ? theme.colors.blue[6]
-                    : hasData
-                      ? theme.colors.blue[0]
-                      : theme.colors.gray[1],
+                    ? MAIN_COLOR
+                    : theme.colors.gray[1],
 
-                  border: isSelected
-                    ? `2px solid ${theme.colors.blue[6]}`
-                    : hasData
-                      ? `2px solid ${theme.colors.blue[2]}`
+                  border:
+                    isSelected || hasData
+                      ? `2px solid ${MAIN_COLOR}`
                       : "2px solid transparent",
 
                   "&:hover": {
                     transform: "scale(1.1)",
                     backgroundColor: isSelected
-                      ? theme.colors.blue[7]
+                      ? MAIN_COLOR
                       : theme.colors.gray[2],
                   },
                 })}
@@ -69,20 +68,19 @@ export const Weekbar = ({ onDateSelect, selectedDate }) => {
                 <Text
                   fw={700}
                   size="sm"
-                  c={isSelected ? "white" : hasData ? "blue.7" : "gray.6"}
+                  c={isSelected ? "white" : hasData ? MAIN_COLOR : "gray.6"}
                 >
                   {dayName}
                 </Text>
               </UnstyledButton>
 
-              {/* Малка точка индикатор под кръга, ако има данни */}
               {hasData && !isSelected && (
                 <div
                   style={{
                     width: 4,
                     height: 4,
                     borderRadius: "50%",
-                    backgroundColor: "var(--mantine-color-blue-6)",
+                    backgroundColor: MAIN_COLOR,
                   }}
                 />
               )}
@@ -97,7 +95,7 @@ export const Weekbar = ({ onDateSelect, selectedDate }) => {
           height: "60px",
           color: "black",
         }}
-        onClick={prevWeek}
+        onClick={nextWeek}
       >
         <IconArrowRight />
       </Button>
