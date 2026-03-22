@@ -41,7 +41,7 @@ export const Header = () => {
                   <Avatar
                     src={session?.user.user_metadata.avatar_url}
                     radius="xl"
-                    color="blue"
+                    color="white"
                     variant="light"
                   >
                     {nickname?.charAt(0).toUpperCase()}
