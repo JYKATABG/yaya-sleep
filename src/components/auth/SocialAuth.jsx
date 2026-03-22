@@ -32,7 +32,7 @@ export default function SocialAuth() {
   };
 
   return (
-    <Stack style={{marginTop: "20px"}}>
+    <Stack style={{ marginTop: "20px" }}>
       <Divider label="or continue with" labelPosition="center" />
 
       <Button
@@ -52,6 +52,7 @@ export default function SocialAuth() {
         />
         <Button
           variant="light"
+          color="#39c9bb"
           onClick={handleMagicLink}
           loading={loading}
           fullWidth

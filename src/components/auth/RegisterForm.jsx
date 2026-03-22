@@ -76,7 +76,7 @@ export default function RegisterForm() {
           {...form.getInputProps("password")}
         />
       </Stack>
-      <Button type="submit" loading={loading}>
+      <Button type="submit" bg="#39c9bb" loading={loading}>
         Register
       </Button>
     </form>

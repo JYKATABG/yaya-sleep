@@ -16,10 +16,10 @@ export default function AuthPages() {
           margin: "auto",
         }}
       >
-        <Tabs defaultValue={"login"}>
+        <Tabs defaultValue={"login"} color="#39c9bb">
           <Tabs.List>
-            <Tabs.Tab value="login">Login</Tabs.Tab>
-            <Tabs.Tab value="register">Register</Tabs.Tab>
+            <Tabs.Tab value="login" flex={1}>Login</Tabs.Tab>
+            <Tabs.Tab value="register" flex={1}>Register</Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="login" pt={"xl"}>
             <LoginForm />

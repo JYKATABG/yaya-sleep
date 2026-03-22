@@ -45,7 +45,7 @@ export default function LoginForm() {
           placeholder="Your password..."
           {...form.getInputProps("password")}
         />
-        <Button type="submit" loading={loading}>
+        <Button type="submit" bg="#39c9bb" loading={loading}>
           Login
         </Button>
       </Stack>
