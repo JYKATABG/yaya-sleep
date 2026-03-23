@@ -57,7 +57,7 @@ const MOTIVATIONAL_MESSAGES = [
 ];
 
 export const LogCard = ({ log }) => {
-  const { editLog, deleteLog } = useSleep();
+  const { editLog, deleteLog, dailySleepGoal } = useSleep();
   const { hours, minutes } = calculateSleepDuration(log.bedtime, log.wake_up);
   const [opened, { open, close }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
@@ -85,7 +85,7 @@ export const LogCard = ({ log }) => {
     return messagesArr[index];
   };
 
-  const isOptimal = hours >= 8;
+  const isOptimal = hours >= dailySleepGoal;
   const activeMessage = isOptimal
     ? getPersistentMessage(log?.id, CONGRATS_MESSAGES)
     : getPersistentMessage(log?.id, MOTIVATIONAL_MESSAGES);

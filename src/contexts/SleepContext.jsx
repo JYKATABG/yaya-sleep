@@ -1,6 +1,6 @@
-import toast from "react-hot-toast";
 import { supabase } from "../supabaseClient";
 import { createContext, useContext, useState, useEffect } from "react";
+import { useAuth } from "./AuthContext";
 
 const SleepContext = createContext();
 
@@ -8,6 +8,8 @@ export function SleepProvider({ children }) {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [weekOffset, setWeekOffset] = useState(0);
+  const [dailySleepGoal, setDailySleepGoal] = useState(8);
+  const { user } = useAuth();
 
   async function fetchLogs() {
     const { data, error } = await supabase
@@ -21,6 +23,13 @@ export function SleepProvider({ children }) {
   useEffect(() => {
     fetchLogs();
   }, []);
+
+  useEffect(() => {
+    const savedGoal = user?.user_metadata?.daily_goal;
+    if (savedGoal) {
+      setDailySleepGoal(savedGoal);
+    }
+  }, [user]);
 
   const lastSevenDays = Array.from({ length: 7 })
     .map((_, i) => {
@@ -55,6 +64,22 @@ export function SleepProvider({ children }) {
 
   const resetToToday = () => {
     setWeekOffset(0);
+  };
+
+  const updateSleepGoal = async (newGoal) => {
+    try {
+      const { error } = await supabase.auth.updateUser({
+        data: { daily_goal: newGoal },
+      });
+
+      if (error) throw error;
+
+      setDailySleepGoal(newGoal);
+      return true;
+    } catch (error) {
+      console.error("Error updating goal: ", error);
+      return false;
+    }
   };
 
   const editLog = async (logId, data) => {
@@ -108,6 +133,9 @@ export function SleepProvider({ children }) {
         resetToToday,
         editLog,
         deleteLog,
+        dailySleepGoal,
+        setDailySleepGoal,
+        updateSleepGoal,
       }}
     >
       {children}
