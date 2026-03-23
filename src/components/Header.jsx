@@ -29,8 +29,11 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export const Header = () => {
-  const { dailySleepGoal, updateSleepGoal } = useSleep();
+  const { dailySleepGoal, setDailySleepGoal } = useSleep();
+  const { username, updateProfile } = useAuth();
   const [tempGoal, setTempGoal] = useState(dailySleepGoal);
+  const [isSaving, setIsSaving] = useState(false);
+  const [tempUsername, setTempUsername] = useState(username);
   const [isEditing, setIsEditing] = useState(false);
   const { session, signOut, user } = useAuth();
   const [opened, { open, close }] = useDisclosure(false);
@@ -42,8 +45,9 @@ export const Header = () => {
   useEffect(() => {
     if (opened) {
       setTempGoal(dailySleepGoal);
+      setTempUsername(username);
     }
-  }, [opened, dailySleepGoal]);
+  }, [opened, dailySleepGoal, username]);
 
   const date = new Date();
   const formattedDate = new Intl.DateTimeFormat("en-US", {
@@ -52,17 +56,45 @@ export const Header = () => {
     day: "numeric",
   }).format(date);
 
-  const handleSave = async (newGoal) => {
-    const success = await updateSleepGoal(newGoal);
-    if (success) {
-      toast.success("Profile updated successfully ✨");
+  const handleSave = async () => {
+    const goalChanged = tempGoal !== dailySleepGoal;
+    const usernameChanged = username !== tempUsername;
+
+    if (!goalChanged && !usernameChanged) {
       setIsEditing(false);
-    } else {
-      toast.error("Failed to update goal. Please try again!");
+      return;
+    }
+
+    if (usernameChanged && tempUsername.trim().length === 0) {
+      return toast.error("Please enter a valid username");
+    }
+
+    if (usernameChanged && tempUsername.length > 20) {
+      return toast.error("Username is too long (max 20 chars)");
+    }
+
+    setIsSaving(true);
+
+    try {
+      const updates = {};
+      if (usernameChanged) updates.full_name = tempUsername;
+      if (goalChanged) updates.daily_goal = tempGoal;
+
+      const success = await updateProfile(updates);
+
+      if (success) {
+        toast.success("Profile updated! ✨");
+        setDailySleepGoal(tempGoal);
+        setIsEditing(false);
+      } else {
+        toast.error("Error saving changes");
+      }
+    } catch (error) {
+      console.error("Unexpected error occured ", error);
+    } finally {
+      setIsSaving(false);
     }
   };
-
-  console.log(dailySleepGoal);
 
   return (
     <Container fluid h={70} px="md" w="95%">
@@ -156,9 +188,10 @@ export const Header = () => {
                 />
                 <TextInput
                   label="Username"
-                  value={user?.user_metadata?.full_name}
+                  defaultValue={tempUsername}
                   w="100%"
                   disabled={!isEditing}
+                  onChange={(e) => setTempUsername(e.currentTarget.value)}
                 />
               </Stack>
 
@@ -191,6 +224,7 @@ export const Header = () => {
               {!isEditing ? (
                 <Button
                   fullWidth
+                  bg="#39c9bb"
                   onClick={() => {
                     setTempGoal(dailySleepGoal);
                     setIsEditing(true);
@@ -201,17 +235,21 @@ export const Header = () => {
               ) : (
                 <Group grow>
                   <Button
-                    variant="danger"
+                    color="red"
                     onClick={() => {
                       setTempGoal(dailySleepGoal);
                       setIsEditing(false);
                     }}
+                    disabled={isSaving}
                   >
                     Cancel
                   </Button>
                   <Button
                     variant="default"
-                    onClick={() => handleSave(tempGoal)}
+                    color="#39c9bb"
+                    loading={isSaving}
+                    loaderProps={{ type: "dots" }}
+                    onClick={handleSave}
                   >
                     Save changes
                   </Button>

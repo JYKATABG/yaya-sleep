@@ -8,6 +8,7 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const handleVerifyOtp = async () => {
@@ -50,6 +51,12 @@ export function AuthProvider({ children }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if (session?.user) {
+      setUsername(session?.user?.user_metadata?.full_name || "anonymous");
+    }
+  }, [session?.user]);
+
   const signOut = async () => {
     if (!session) toast.error("Your session is expired");
 
@@ -67,8 +74,35 @@ export function AuthProvider({ children }) {
 
   const user = session?.user ?? null;
 
+  const updateProfile = async (updates) => {
+    try {
+      const { error } = await supabase.auth.updateUser({
+        data: updates,
+      });
+
+      if (error) throw error;
+
+      if (updates.full_name !== undefined) setUsername(updates.full_name);
+
+      return true;
+    } catch (error) {
+      console.error("Error updating profile: ", error.message);
+      return false;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ session, user, loading, signOut }}>
+    <AuthContext.Provider
+      value={{
+        session,
+        user,
+        loading,
+        signOut,
+        username,
+        setUsername,
+        updateProfile,
+      }}
+    >
       {!loading && children}
     </AuthContext.Provider>
   );

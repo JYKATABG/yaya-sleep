@@ -8,8 +8,8 @@ export function SleepProvider({ children }) {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [weekOffset, setWeekOffset] = useState(0);
-  const [dailySleepGoal, setDailySleepGoal] = useState(8);
   const { user } = useAuth();
+  const [dailySleepGoal, setDailySleepGoal] = useState(8);
 
   async function fetchLogs() {
     const { data, error } = await supabase
