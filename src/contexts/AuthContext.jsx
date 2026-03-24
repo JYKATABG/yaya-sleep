@@ -91,6 +91,31 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const updateAvatar = async (file, userId) => {
+    try {
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = `${userId}/${fileName}`;
+
+      const { error: uploadError, data } = await supabase.storage
+        .from("avatars")
+        .upload(filePath, file, {
+          upsert: true,
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: urlData } = supabase.storage
+        .from("avatars")
+        .getPublicUrl(filePath);
+
+      return urlData.publicUrl;
+    } catch (error) {
+      console.error("Грешка при качване:", error.message);
+      return null;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -101,6 +126,7 @@ export function AuthProvider({ children }) {
         username,
         setUsername,
         updateProfile,
+        updateAvatar
       }}
     >
       {!loading && children}
