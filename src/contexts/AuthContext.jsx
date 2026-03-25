@@ -21,7 +21,31 @@ export function AuthProvider({ children }) {
         .eq("id", userId)
         .single();
 
-      if (error && error.code !== "PGRST116") throw error;
+      if (error && error.code === "PGRST116") {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        const newProfile = {
+          id: userId,
+          full_name:
+            user?.user_metadata?.full_name || user?.email?.split("@")[0],
+          avatar_url: user?.user_metadata?.avatar_url || "",
+          daily_goal: 8.0,
+        };
+
+        const { error: insertError } = await supabase
+          .from("profiles")
+          .insert(newProfile);
+
+        if (!insertError) {
+          setUsername(newProfile.full_name);
+          setAvatarUrl(newProfile.avatar_url);
+          setDailySleepGoal(newProfile.daily_goal);
+        }
+        return;
+      }
+
+      if (error) throw error;
 
       if (data) {
         setUsername(data.full_name || "");

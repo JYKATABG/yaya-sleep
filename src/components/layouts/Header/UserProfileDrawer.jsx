@@ -163,6 +163,7 @@ export const UserProfileDrawer = ({ opened, onClose }) => {
 
     setIsSaving(false);
   };
+
   return (
     <Drawer
       opened={opened}

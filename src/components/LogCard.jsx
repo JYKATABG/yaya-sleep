@@ -17,6 +17,7 @@ import { DatePicker, TimePicker } from "@mantine/dates";
 import { useSleep } from "../contexts/SleepContext";
 import toast from "react-hot-toast";
 import { IconClock, IconMoonStars } from "@tabler/icons-react";
+import { useAuth } from "../contexts/AuthContext";
 
 const CONGRATS_MESSAGES = [
   "Great job! 🌟 Fully charged!",
@@ -57,7 +58,8 @@ const MOTIVATIONAL_MESSAGES = [
 ];
 
 export const LogCard = ({ log }) => {
-  const { editLog, deleteLog, dailySleepGoal } = useSleep();
+  const { editLog, deleteLog } = useSleep();
+  const { dailySleepGoal } = useAuth();
   const { hours, minutes } = calculateSleepDuration(log.bedtime, log.wake_up);
   const [opened, { open, close }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
