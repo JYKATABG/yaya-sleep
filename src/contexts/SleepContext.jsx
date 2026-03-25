@@ -1,6 +1,6 @@
-import toast from "react-hot-toast";
 import { supabase } from "../supabaseClient";
 import { createContext, useContext, useState, useEffect } from "react";
+import { useAuth } from "./AuthContext";
 
 const SleepContext = createContext();
 
@@ -8,6 +8,7 @@ export function SleepProvider({ children }) {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [weekOffset, setWeekOffset] = useState(0);
+  const { user } = useAuth();
 
   async function fetchLogs() {
     const { data, error } = await supabase

@@ -1,14 +1,19 @@
 import { useAuth } from "../contexts/AuthContext";
-import { Group, Text, Avatar, Menu, UnstyledButton, rem, Stack, Container } from '@mantine/core';
-import { IconLogout, IconChevronDown, IconCalendarStats, IconUser } from '@tabler/icons-react';
+import { Group, Container } from "@mantine/core";
 import "../styles/Header.css";
+import { useDisclosure } from "@mantine/hooks";
+import { UserGreeting } from "./layouts/Header/UserGreeting";
+import { UserMenu } from "./layouts/Header/UserMenu";
+import { UserProfileDrawer } from "./layouts/Header/UserProfileDrawer";
 
 export const Header = () => {
-  const { session, signOut } = useAuth();
+  const { session, signOut, user, avatarUrl, username } = useAuth();
+
+  const [opened, { open, close }] = useDisclosure(false);
   const nickname =
-    session?.user.user_metadata.full_name ||
-    session?.user.user_metadata.name ||
-    session?.user.email.split("@gmail.com")[0];
+    username ||
+    user?.user_metadata.full_name ||
+    user?.email.split("@gmail.com")[0];
 
   const date = new Date();
   const formattedDate = new Intl.DateTimeFormat("en-US", {
@@ -20,55 +25,18 @@ export const Header = () => {
   return (
     <Container fluid h={70} px="md" w="95%">
       <Group justify="space-between" h="100%">
-
-        <Stack gap={0}>
-          <Text size="lg" fw={700} c="white">
-            {nickname}! 👋
-          </Text>
-          <Group gap={5}>
-            <IconCalendarStats size={14} color="white" />
-            <Text size="sm" c="white" fw={500}>
-              {formattedDate}
-            </Text>
-          </Group>
-        </Stack>
+        <UserGreeting nickname={nickname} formattedDate={formattedDate} />
 
         {session && (
-          <Menu shadow="md" width={200} position="bottom-end" transitionProps={{ transition: 'pop-top-right' }}>
-            <Menu.Target>
-              <UnstyledButton style={{ padding: '5px', borderRadius: '8px', color: "white" }}>
-                <Group gap={7}>
-                  <Avatar
-                    src={session?.user.user_metadata.avatar_url}
-                    radius="xl"
-                    color="white"
-                    variant="light"
-                  >
-                    {nickname?.charAt(0).toUpperCase()}
-                  </Avatar>
-                  <IconChevronDown size={rem(14)} stroke={1.5} />
-                </Group>
-              </UnstyledButton>
-            </Menu.Target>
-
-            <Menu.Dropdown>
-              <Menu.Label>Application</Menu.Label>
-              <Menu.Item leftSection={<IconUser size={14} stroke={1.5} />}>
-                Profile
-              </Menu.Item>
-
-              <Menu.Divider />
-
-              <Menu.Label>Danger zone</Menu.Label>
-              <Menu.Item
-                color="red"
-                onClick={signOut}
-                leftSection={<IconLogout size={14} stroke={1.5} />}
-              >
-                Logout
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
+          <>
+            <UserMenu
+              userAvatarUrl={avatarUrl}
+              nickname={nickname?.charAt(0).toUpperCase()}
+              onOpenProfile={open}
+              onSignOut={signOut}
+            />
+            <UserProfileDrawer opened={opened} onClose={close} />
+          </>
         )}
       </Group>
     </Container>
