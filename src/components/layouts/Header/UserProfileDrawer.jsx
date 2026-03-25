@@ -1,7 +1,6 @@
 import imageCompression from "browser-image-compression";
 
 import { useEffect, useState } from "react";
-import { useSleep } from "../../../contexts/SleepContext";
 import toast from "react-hot-toast";
 import {
   Group,
@@ -26,8 +25,14 @@ import { IconPencil, IconPhoto, IconLink } from "@tabler/icons-react";
 import { useAuth } from "../../../contexts/AuthContext";
 
 export const UserProfileDrawer = ({ opened, onClose }) => {
-  const { dailySleepGoal, setDailySleepGoal } = useSleep();
-  const { updateProfile, updateAvatar, username, user } = useAuth();
+  const {
+    updateProfile,
+    updateAvatar,
+    username,
+    avatarUrl,
+    dailySleepGoal,
+    user,
+  } = useAuth();
 
   const [tempGoal, setTempGoal] = useState(dailySleepGoal);
   const [isSaving, setIsSaving] = useState(false);
@@ -73,7 +78,6 @@ export const UserProfileDrawer = ({ opened, onClose }) => {
 
       if (success) {
         toast.success("Profile updated! ✨");
-        setDailySleepGoal(tempGoal);
         setIsEditing(false);
       } else {
         toast.error("Error saving changes");
@@ -191,7 +195,7 @@ export const UserProfileDrawer = ({ opened, onClose }) => {
               }}
             >
               <Avatar
-                src={user?.user_metadata.avatar_url}
+                src={avatarUrl}
                 radius="50%"
                 size="xl"
                 style={{ border: "2px solid #39c9bb" }}

@@ -8,32 +8,35 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const [username, setUsername] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [dailySleepGoal, setDailySleepGoal] = useState(8);
+
+  const fetchProfile = async (userId) => {
+    try {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("full_name, avatar_url, daily_goal")
+        .eq("id", userId)
+        .single();
+
+      if (error && error.code !== "PGRST116") throw error;
+
+      if (data) {
+        setUsername(data.full_name || "");
+        setAvatarUrl(data.avatar_url || "");
+        setDailySleepGoal(data.daily_goal || 8);
+      }
+    } catch (error) {
+      console.error("Error fetching profile:", error.message);
+    }
+  };
 
   useEffect(() => {
-    const handleVerifyOtp = async () => {
-      const params = new URLSearchParams(window.location.search);
-      const token_hash = params.get("token_hash");
-      const type = params.get("type") || "email";
-
-      if (token_hash) {
-        const { error } = await supabase.auth.verifyOtp({ token_hash, type });
-        if (error) {
-          toast.error("Invalid or expired link. ❌");
-        } else {
-          window.history.replaceState(
-            {},
-            document.title,
-            window.location.pathname,
-          );
-        }
-      }
-    };
-
-    handleVerifyOtp();
-
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
+      if (session?.user) fetchProfile(session.user.id);
       setLoading(false);
     });
 
@@ -41,21 +44,20 @@ export function AuthProvider({ children }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      if (session?.user) {
+        fetchProfile(session.user.id);
+      } else {
+        setUsername("");
+        setAvatarUrl("");
+        setDailySleepGoal(8);
+      }
       setLoading(false);
 
-      if (_event === "SIGNED_IN") {
-        router.navigate("/");
-      }
+      if (_event === "SIGNED_IN") router.navigate("/");
     });
 
     return () => subscription.unsubscribe();
   }, []);
-
-  useEffect(() => {
-    if (session?.user) {
-      setUsername(session?.user?.user_metadata?.full_name || "anonymous");
-    }
-  }, [session?.user]);
 
   const signOut = async () => {
     if (!session) toast.error("Your session is expired");
@@ -76,13 +78,24 @@ export function AuthProvider({ children }) {
 
   const updateProfile = async (updates) => {
     try {
-      const { error } = await supabase.auth.updateUser({
-        data: updates,
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      const { error: dbError } = await supabase.from("profiles").upsert({
+        id: user.id,
+        ...updates,
+        updated_at: new Date().toISOString(),
       });
 
-      if (error) throw error;
+      if (dbError) throw dbError;
+
+      await supabase.auth.updateUser({ data: updates });
 
       if (updates.full_name !== undefined) setUsername(updates.full_name);
+      if (updates.avatar_url !== undefined) setAvatarUrl(updates.full_name);
+      if (updates.daily_goal !== undefined)
+        setDailySleepGoal(updates.daily_goal);
 
       return true;
     } catch (error) {
@@ -122,11 +135,12 @@ export function AuthProvider({ children }) {
         session,
         user,
         loading,
-        signOut,
         username,
-        setUsername,
+        avatarUrl,
+        dailySleepGoal,
+        signOut,
         updateProfile,
-        updateAvatar
+        updateAvatar,
       }}
     >
       {!loading && children}

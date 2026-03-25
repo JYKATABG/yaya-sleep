@@ -7,12 +7,12 @@ import { UserMenu } from "./layouts/Header/UserMenu";
 import { UserProfileDrawer } from "./layouts/Header/UserProfileDrawer";
 
 export const Header = () => {
-  const { session, signOut, user } = useAuth();
+  const { session, signOut, user, avatarUrl, username } = useAuth();
 
   const [opened, { open, close }] = useDisclosure(false);
   const nickname =
+    username ||
     user?.user_metadata.full_name ||
-    user?.user_metadata.name ||
     user?.email.split("@gmail.com")[0];
 
   const date = new Date();
@@ -30,7 +30,7 @@ export const Header = () => {
         {session && (
           <>
             <UserMenu
-              userAvatarUrl={user?.user_metadata.avatar_url}
+              userAvatarUrl={avatarUrl}
               nickname={nickname?.charAt(0).toUpperCase()}
               onOpenProfile={open}
               onSignOut={signOut}
