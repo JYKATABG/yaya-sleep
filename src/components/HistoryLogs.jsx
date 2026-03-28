@@ -2,7 +2,7 @@ import "../styles/HistoryLogs.css";
 import { LogCard } from "./LogCard";
 import { useSleep } from "../contexts/SleepContext";
 import { Weekbar } from "./Weekbar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Button,
   Center,
@@ -18,7 +18,24 @@ import { IconMoonOff, IconZzz } from "@tabler/icons-react";
 export const HistoryLogs = () => {
   const { groupedLogs, loading, lastSevenDays, weekOffset, resetToToday } =
     useSleep();
-  const [selectedDate, setSelectedDate] = useState(lastSevenDays[0]);
+  const todayStr = new Date().toLocaleDateString("sv");
+  const [selectedDate, setSelectedDate] = useState(todayStr);
+
+  let isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    if (weekOffset === 0) {
+      setSelectedDate(todayStr);
+    } else if (weekOffset !== 0) {
+      setSelectedDate(lastSevenDays[0]);
+    }
+  }, [weekOffset, lastSevenDays]);
+  
 
   const date = new Date(selectedDate);
   const formattedDate = new Intl.DateTimeFormat("en-US", {
@@ -27,9 +44,10 @@ export const HistoryLogs = () => {
     year: "numeric",
   }).format(date);
 
-  useEffect(() => {
-    setSelectedDate(lastSevenDays[0]);
-  }, [weekOffset]);
+  const handleReset = () => {
+    setSelectedDate(todayStr);
+    resetToToday();
+  };
 
   if (loading) return <p>Loading logs...</p>;
 
@@ -48,7 +66,7 @@ export const HistoryLogs = () => {
             bg="#39c9bb"
             color="white"
             radius="10px"
-            onClick={resetToToday}
+            onClick={handleReset}
           >
             Today
           </Button>

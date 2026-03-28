@@ -3,7 +3,7 @@ import { useSleep } from "../contexts/SleepContext";
 import "../styles/Weekbar.css";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 
-const MAIN_COLOR = "#39c9bb"
+const MAIN_COLOR = "#39c9bb";
 
 export const Weekbar = ({ onDateSelect, selectedDate }) => {
   const { groupedLogs, lastSevenDays, nextWeek, prevWeek } = useSleep();

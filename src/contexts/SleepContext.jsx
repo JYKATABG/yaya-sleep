@@ -26,7 +26,7 @@ export function SleepProvider({ children }) {
   const lastSevenDays = Array.from({ length: 7 })
     .map((_, i) => {
       const newDate = new Date();
-      newDate.setDate(newDate.getDate() - i + weekOffset * 7);
+      newDate.setDate(newDate.getDate() - i + weekOffset * 7 + 1);
       return newDate.toISOString().split("T")[0];
     })
     .reverse();
