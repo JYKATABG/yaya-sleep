@@ -5,7 +5,7 @@
 body {
   margin: 0 auto;
   padding: 0;
-  background-color: #e0f7fa;
+  background-color: var(--mantine-color-default);
 }
 
 :root {
@@ -18,26 +18,3 @@ body {
   --primary-button: #26c6da;
   --notification: #80cbc4;
 }
-
-/* *,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    line-height: 1.5;
-}
-
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    min-height: 100vh;
-    padding: 20px 0;
-    background-color: var(--bg-main);
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-} */

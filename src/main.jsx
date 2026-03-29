@@ -35,7 +35,7 @@ export const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <MantineProvider>
+    <MantineProvider defaultColorScheme="auto">
       <AuthProvider>
         <SleepProvider>
           <Toaster position="top-right" />
