@@ -15,8 +15,9 @@ export const Weekbar = ({ onDateSelect, selectedDate }) => {
           backgroundColor: "transparent",
           width: "60px",
           height: "60px",
-          color: "black",
+          color: " var(--mantine-color-text)"
         }}
+        variant="subtle"
         onClick={prevWeek}
       >
         <IconArrowLeft />
@@ -93,12 +94,12 @@ export const Weekbar = ({ onDateSelect, selectedDate }) => {
           backgroundColor: "transparent",
           width: "60px",
           height: "60px",
-          color: "black",
+          color: " var(--mantine-color-text)"
         }}
         onClick={nextWeek}
       >
         <IconArrowRight />
       </Button>
-    </div>
+    </div >
   );
 };

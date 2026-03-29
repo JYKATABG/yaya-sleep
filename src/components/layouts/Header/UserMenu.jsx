@@ -1,5 +1,22 @@
-import { Avatar, Group, Menu, rem, UnstyledButton } from "@mantine/core";
-import { IconChevronDown, IconLogout, IconUser } from "@tabler/icons-react";
+import {
+  Avatar,
+  Group,
+  Menu,
+  rem,
+  Switch,
+  Text,
+  UnstyledButton,
+  useComputedColorScheme,
+  useMantineColorScheme,
+  useMantineTheme,
+} from "@mantine/core";
+import {
+  IconChevronDown,
+  IconLogout,
+  IconMoonStars,
+  IconSun,
+  IconUser,
+} from "@tabler/icons-react";
 
 export const UserMenu = ({
   userAvatarUrl,
@@ -7,6 +24,17 @@ export const UserMenu = ({
   onOpenProfile,
   onSignOut,
 }) => {
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
+  const computedColorScheme = useComputedColorScheme("light");
+  const theme = useMantineTheme();
+
+  const sunIcon = (
+    <IconSun size={16} stroke={2.5} color={theme.colors.yellow[4]} />
+  );
+  const moonIcon = (
+    <IconMoonStars size={16} stroke={2.5} color={theme.colors.blue[6]} />
+  );
+
   return (
     <Menu
       shadow="md"
@@ -43,6 +71,26 @@ export const UserMenu = ({
           onClick={onOpenProfile}
         >
           Profile
+        </Menu.Item>
+        <Menu.Item closeMenuOnClick={false}>
+          <Group justify="space-between">
+            <Text size="sm" fw={500}>
+              Dark mode
+            </Text>
+            <Switch
+              size="md"
+              color="dark.4"
+              onLabel={sunIcon}
+              offLabel={moonIcon}
+              checked={computedColorScheme === "dark"}
+              onChange={(e) => {
+                e.stopPropagation();
+                setColorScheme(
+                  computedColorScheme === "light" ? "dark" : "light",
+                );
+              }}
+            />
+          </Group>
         </Menu.Item>
 
         <Menu.Divider />
