@@ -18,6 +18,7 @@ import { useSleep } from "../contexts/SleepContext";
 import toast from "react-hot-toast";
 import { IconClock, IconMoonStars } from "@tabler/icons-react";
 import { useAuth } from "../contexts/AuthContext";
+import { useState } from "react";
 
 const CONGRATS_MESSAGES = [
   "Great job! 🌟 Fully charged!",
@@ -64,6 +65,7 @@ export const LogCard = ({ log }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const [deleteOpened, { open: openDelete, close: closeDelete }] =
     useDisclosure(false);
+  const [editingLog, setEditingLog] = useState(null);
 
   const isMobile = useMediaQuery("(max-width: 500px)");
   const MAIN_COLOR = "#39c9bb";
@@ -143,6 +145,8 @@ export const LogCard = ({ log }) => {
     }
   };
 
+  const isActive = editingLog?.id === log.id
+
   return (
     <>
       <Paper
@@ -151,21 +155,26 @@ export const LogCard = ({ log }) => {
         radius="md"
         mb="sm"
         shadow="xs"
-        onClick={open}
+        onClick={() => {
+          setEditingLog(log);
+          open()
+        }}
         style={{
           cursor: "pointer",
           transition: "all 0.2s ease",
-          ":hover": {
-            backgroundColor: "#fcfdfd",
-          },
+          borderBottom: `2px solid ${isActive ? MAIN_COLOR : "var(--mantine-color-default-border)"}`,
+          backgroundColor: isActive
+            ? "var(--mantine-color-blue-light)"
+            : "var(--mantine-color-default)",
+          transform: isActive ? "translateY(-2px)" : "none",
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = "translateY(-2px)";
-          e.currentTarget.style.borderColor = MAIN_COLOR;
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = "translateY(0)";
-          e.currentTarget.style.borderColor = "#dee2e6";
+        styles={{
+          root: {
+            "&:hover": {
+              borderBottomColor: MAIN_COLOR,
+              backgroundColor: "var(--mantine-color-default-hover)",
+            }
+          }
         }}
       >
         <Group
@@ -245,7 +254,10 @@ export const LogCard = ({ log }) => {
           </Stack>
         </Group>
       </Paper>
-      <Modal opened={opened} onClose={close} centered size={"md"} key={log?.id}>
+      <Modal opened={opened} onClose={() => {
+        setEditingLog(null)
+        close();
+      }} centered size="md" radius="md" key={log?.id}>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <Text size="lg">Edit log for {log.day_name}</Text>
           <Button color="red" onClick={openDelete}>
@@ -281,10 +293,10 @@ export const LogCard = ({ log }) => {
             margin: "10px 0",
           }}
         >
-          <Button style={{ flex: "1" }} size="md" onClick={handleEdit}>
+          <Button style={{ flex: "1" }} size="md" onClick={handleEdit} bg="#39c9bb">
             Save
           </Button>
-          <Button style={{ flex: "1" }} size="md" onClick={close}>
+          <Button variant="filed" bg="red" style={{ flex: "1" }} size="md" onClick={close}>
             Close
           </Button>
         </div>
