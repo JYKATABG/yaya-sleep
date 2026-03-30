@@ -33,7 +33,7 @@ export const Weekbar = ({ onDateSelect, selectedDate }) => {
           const isSelected = selectedDate === date;
           const dayName = new Intl.DateTimeFormat("en-US", {
             weekday: "narrow",
-          }).format(new Date(date));
+          }).format(new Date(date + "T00:00:00"));
 
           return (
             <Stack key={date} align="center" gap={4} style={{ flexShrink: 0 }}>

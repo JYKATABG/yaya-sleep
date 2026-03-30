@@ -26,8 +26,9 @@ export function SleepProvider({ children }) {
   const lastSevenDays = Array.from({ length: 7 })
     .map((_, i) => {
       const newDate = new Date();
-      newDate.setDate(newDate.getDate() - i + weekOffset * 7);
-      return newDate.toISOString().split("T")[0];
+      newDate.setHours(12, 0, 0, 0)
+      newDate.setDate(newDate.getDate() + (weekOffset * 7) - i);
+      return newDate.toLocaleDateString("sv");
     })
     .reverse();
 
@@ -44,8 +45,8 @@ export function SleepProvider({ children }) {
   const totalSleepMinutes =
     logs.length > 0
       ? Math.round(
-          logs.reduce((acc, log) => acc + log.duration_min, 0) / logs.length,
-        )
+        logs.reduce((acc, log) => acc + log.duration_min, 0) / logs.length,
+      )
       : 0;
 
   const avgHours = Math.floor(totalSleepMinutes / 60);

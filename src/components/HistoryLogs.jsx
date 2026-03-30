@@ -21,7 +21,7 @@ export const HistoryLogs = () => {
   const todayStr = new Date().toLocaleDateString("sv");
   const [selectedDate, setSelectedDate] = useState(todayStr);
 
-  let isFirstRender = useRef(true);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     if (isFirstRender.current) {
@@ -35,7 +35,7 @@ export const HistoryLogs = () => {
       setSelectedDate(lastSevenDays[0]);
     }
   }, [weekOffset, lastSevenDays]);
-  
+
 
   const date = new Date(selectedDate);
   const formattedDate = new Intl.DateTimeFormat("en-US", {
