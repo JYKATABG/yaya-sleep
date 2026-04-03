@@ -12,8 +12,9 @@ import {
   Stack,
   ThemeIcon,
   Text,
+  ActionIcon,
 } from "@mantine/core";
-import { IconMoonOff, IconZzz } from "@tabler/icons-react";
+import { IconMoonOff, IconRotateClockwise2, IconZzz } from "@tabler/icons-react";
 
 export const HistoryLogs = () => {
   const { groupedLogs, loading, lastSevenDays, weekOffset, resetToToday } =
@@ -62,14 +63,9 @@ export const HistoryLogs = () => {
       <div className="date-resetbtn-section">
         <h3 className="log-main-date">{formattedDate}</h3>
         {weekOffset !== 0 && (
-          <Button
-            bg="#39c9bb"
-            color="white"
-            radius="10px"
-            onClick={handleReset}
-          >
-            Today
-          </Button>
+          <ActionIcon onClick={resetToToday} variant="light" color="blue" size="lg" radius="xl">
+            <IconRotateClockwise2 size={18} />
+          </ActionIcon>
         )}
       </div>
       <Weekbar onDateSelect={setSelectedDate} selectedDate={selectedDate} />
