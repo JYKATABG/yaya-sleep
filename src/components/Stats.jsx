@@ -1,5 +1,5 @@
 import { useSleep } from "../contexts/SleepContext";
-import { Paper, Text, Group, Tabs, rem, Stack, ActionIcon } from "@mantine/core";
+import { Paper, Text, Group, Tabs, Stack, ActionIcon } from "@mantine/core";
 import "../styles/Stats.css";
 import { IconChartBar, IconChartLine, IconChevronLeft, IconChevronRight, IconLayoutDashboard, IconRotateClockwise2 } from "@tabler/icons-react";
 import { WeeklyChart } from "./layouts/Charts/WeeklyChart";
@@ -31,9 +31,8 @@ export const Stats = () => {
             <Tabs.Tab value="monthly" leftSection={<IconChartLine size={16} />}>Monthly</Tabs.Tab>
           </Tabs.List>
 
-          {/* ПОКАЗВАМЕ НАВИГАЦИЯТА САМО АКО АКТИВНИЯТ ТАБ Е "WEEKLY" */}
           <div style={{
-            height: rem(40),
+            height: 40,
             visibility: activeTab === "weekly" ? "visible" : "hidden",
             opacity: activeTab === "weekly" ? 1 : 0,
             transition: "opacity 0.2s ease"
@@ -43,7 +42,7 @@ export const Stats = () => {
                 <IconChevronLeft size={20} />
               </ActionIcon>
 
-              <Text size="sm" fw={600} c="dimmed" style={{ minWidth: rem(100), textAlign: 'center' }}>
+              <Text size="sm" fw={600} c="dimmed" style={{ minWidth: 100, textAlign: 'center' }}>
                 {weekOffset === 0 ? "This Week" :
                   weekOffset === -1 ? "Last Week" :
                     `${Math.abs(weekOffset)} Weeks Ago`}
@@ -69,7 +68,7 @@ export const Stats = () => {
           </div>
         </Stack>
 
-        <Tabs.Panel value="overview">
+        <Tabs.Panel value="overview" style={{ width: "100%" }}>
           <div className="stats-circle">
             <div className="stats-value">
               <span className="hours">{avgHours}h</span>
