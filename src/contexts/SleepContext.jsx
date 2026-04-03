@@ -98,6 +98,7 @@ export function SleepProvider({ children }) {
   return (
     <SleepContext.Provider
       value={{
+        logs,
         groupedLogs,
         lastSevenDays,
         weekOffset,
