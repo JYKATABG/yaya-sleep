@@ -22,7 +22,7 @@ export const WeeklyChart = () => {
         h={250}
         data={data}
         dataKey="date"
-        series={[{ name: "hours", color: "teal.6", label: "Hours slept" }]}
+        series={[{ name: "hours", color: "#39c9bb", label: "Hours slept" }]}
         tickLine="y"
         gridAxis="xy"
       />
