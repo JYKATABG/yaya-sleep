@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { registerSW } from "virtual:pwa-register";
 import "./index.css";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -10,6 +11,8 @@ import { Toaster } from "react-hot-toast";
 import { SleepProvider } from "./contexts/SleepContext.jsx";
 import { MantineProvider } from "@mantine/core";
 import AuthPages from "./pages/AuthPages.jsx";
+
+registerSW({ immediate: true });
 
 export const router = createBrowserRouter([
   {
