@@ -10,7 +10,7 @@ import {
 const MAIN_COLOR = "#39c9bb";
 
 const getStreakColor = (count) => {
-  if (count <= 5) return "red";
+  if (count <= 5) return "gray";
   if (count <= 10) return "#FAFA33";
   if (count <= 20) return "orange";
   if (count <= 50) return "red";
