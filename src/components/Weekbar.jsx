@@ -1,12 +1,25 @@
 import { Button, Stack, UnstyledButton, Group, rem, Text } from "@mantine/core";
 import { useSleep } from "../contexts/SleepContext";
 import "../styles/Weekbar.css";
-import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconFlameFilled,
+} from "@tabler/icons-react";
 
 const MAIN_COLOR = "#39c9bb";
 
+const getStreakColor = (count) => {
+  if (count <= 5) return "red";
+  if (count <= 10) return "#FAFA33";
+  if (count <= 20) return "orange";
+  if (count <= 50) return "red";
+  if (count <= 100) return MAIN_COLOR;
+};
+
 export const Weekbar = ({ onDateSelect, selectedDate }) => {
-  const { groupedLogs, lastSevenDays, nextWeek, prevWeek } = useSleep();
+  const { groupedLogs, lastSevenDays, nextWeek, prevWeek, streakData } =
+    useSleep();
 
   return (
     <div className="week-bar">
@@ -30,6 +43,8 @@ export const Weekbar = ({ onDateSelect, selectedDate }) => {
       >
         {lastSevenDays.map((date) => {
           const hasData = groupedLogs[date]?.length > 0;
+          const isFireDay = streakData.dates.has(date);
+          const streakColor = getStreakColor(streakData.count);
           const isSelected = selectedDate === date;
           const dayName = new Intl.DateTimeFormat("en-US", {
             weekday: "narrow",
@@ -37,6 +52,25 @@ export const Weekbar = ({ onDateSelect, selectedDate }) => {
 
           return (
             <Stack key={date} align="center" gap={4} style={{ flexShrink: 0 }}>
+              <div
+                style={{
+                  height: rem(18),
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {isFireDay && (
+                  <IconFlameFilled
+                    size={18}
+                    color={
+                      streakColor === "gray"
+                        ? "var(--mantine-color-gray-4)"
+                        : streakColor
+                    }
+                  />
+                )}
+              </div>
               <UnstyledButton
                 onClick={() => onDateSelect(date)}
                 style={(theme) => ({
