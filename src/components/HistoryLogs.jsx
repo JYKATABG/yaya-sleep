@@ -13,12 +13,26 @@ import {
   ThemeIcon,
   Text,
   ActionIcon,
+  Badge,
+  Title,
+  Group,
 } from "@mantine/core";
-import { IconMoonOff, IconRotateClockwise2, IconZzz } from "@tabler/icons-react";
+import {
+  IconMoonOff,
+  IconRotateClockwise2,
+  IconZzz,
+  IconFlameFilled,
+} from "@tabler/icons-react";
 
 export const HistoryLogs = () => {
-  const { groupedLogs, loading, lastSevenDays, weekOffset, resetToToday } =
-    useSleep();
+  const {
+    groupedLogs,
+    loading,
+    lastSevenDays,
+    weekOffset,
+    resetToToday,
+    streakData,
+  } = useSleep();
   const todayStr = new Date().toLocaleDateString("sv");
   const [selectedDate, setSelectedDate] = useState(todayStr);
 
@@ -37,7 +51,6 @@ export const HistoryLogs = () => {
     }
   }, [weekOffset, lastSevenDays]);
 
-
   const date = new Date(selectedDate);
   const formattedDate = new Intl.DateTimeFormat("en-US", {
     day: "numeric",
@@ -50,6 +63,14 @@ export const HistoryLogs = () => {
     resetToToday();
   };
 
+  const getStreakColor = (count) => {
+    if (count <= 5) return "gray";
+    if (count <= 10) return "yellow";
+    if (count <= 20) return "orange";
+    if (count <= 50) return "red";
+    if (count <= 100) return "blue";
+  };
+
   if (loading) return <p>Loading logs...</p>;
 
   return (
@@ -60,14 +81,39 @@ export const HistoryLogs = () => {
       h="100%"
       style={{ display: "flex", flexDirection: "column" }}
     >
-      <div className="date-resetbtn-section">
-        <h3 className="log-main-date">{formattedDate}</h3>
+      <Group
+        justify="space-between"
+        align="center"
+        mb="md"
+        className="date-resetbtn-section"
+      >
+        <Group gap="sm" justify="center" align="center">
+          <Title fw={700} size={"md"} order={3}>
+            {formattedDate}
+          </Title>
+          {streakData.count > 0 && (
+            <Badge
+              variant="filled"
+              color={getStreakColor(streakData.count)}
+              size="lg"
+              leftSection={<IconFlameFilled size={14} />}
+            >
+              {streakData.count} days streak
+            </Badge>
+          )}
+        </Group>
         {weekOffset !== 0 && (
-          <ActionIcon onClick={resetToToday} variant="light" color="blue" size="lg" radius="xl">
+          <ActionIcon
+            onClick={resetToToday}
+            variant="light"
+            color="blue"
+            size="lg"
+            radius="xl"
+          >
             <IconRotateClockwise2 size={18} />
           </ActionIcon>
         )}
-      </div>
+      </Group>
       <Weekbar onDateSelect={setSelectedDate} selectedDate={selectedDate} />
       <List className="history-list">
         {groupedLogs[selectedDate]?.length > 0 ? (
